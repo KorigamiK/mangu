@@ -22,5 +22,6 @@ pnpm-debug.log*
 *.sln
 *.sw?
 *.old*
+temporarycoderunnerfile
 #Electron-builder output
 /dist_electron
