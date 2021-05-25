@@ -1,7 +1,7 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
     <button @click="dynamic_thing='Ha Ha this was tampered with!'">CLICK ME!</button>
-  <HelloWorld msg="Hi origamiK Welcome to Your Vue.js + TypeScript App" :derived_message="dynamic_thing"/>
+  <HelloWorld msg="Hi Sir, Welcome to Mangu-reader" :derived_message="dynamic_thing"/>
 </template>
 
 <script lang="ts">

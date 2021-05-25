@@ -25,3 +25,4 @@ pnpm-debug.log*
 temporarycoderunnerfile
 #Electron-builder output
 /dist_electron
+package-lock.json
