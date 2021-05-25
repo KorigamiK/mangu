@@ -15,7 +15,7 @@ export default class Main {
             frame: true,
             show: false
         });
-        new_window.show()
+        // new_window.show()
         await new_window.loadURL(url)
         let ret = await new_window.webContents.executeJavaScript(script, true)
         new_window.close()
