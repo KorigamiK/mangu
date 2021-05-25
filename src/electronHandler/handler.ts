@@ -1,6 +1,5 @@
 import { BrowserWindow, ipcMain, protocol } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-// import installExtension from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 export default class Main {
