@@ -1,15 +1,17 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h1> {{ derived_message }} </h1>
+    <br>
+    <h1>This is very secret message {{ secret }}</h1>
+    <h1> This is the message that you passed {{ derived_message }} </h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>
-    <h3>Installed CLI Plugins</h3>
+    <h3>Google Test</h3>
     <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
+      <li><a href="https://mail.google.com" target="_blank" rel="noopener">babel</a></li>
     </ul>
     <h3>Essential Links</h3>
     <ul>
@@ -37,7 +39,8 @@ export default defineComponent({
       type: String,
       required: false,
       default: x.thing
-    }
+    },
+    secret: String
   },
 });
 </script>

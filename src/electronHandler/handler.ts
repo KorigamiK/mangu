@@ -1,5 +1,8 @@
 import { BrowserWindow, ipcMain, protocol } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+import {Blacklist} from '../FilterList'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 export default class Main {
@@ -7,6 +10,7 @@ export default class Main {
     static application: Electron.App
     static browser_window = BrowserWindow
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private static async get_page(url: string, script: string): Promise<any> {
         let new_window: null|BrowserWindow = new BrowserWindow({
             height: 600, width: 800,
@@ -14,10 +18,13 @@ export default class Main {
             frame: true,
             show: false
         });
-        // new_window.show()
+        new_window.webContents.session.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
+            callback({cancel: true})
+        })
+        new_window.show()
         await new_window.loadURL(url)
-        let ret = await new_window.webContents.executeJavaScript(script, true)
-        new_window.close()
+        const ret = await new_window.webContents.executeJavaScript(script, true)
+        // new_window.close()
         new_window.on('closed', function () {
             console.log('closing the window')
             new_window = null
@@ -73,7 +80,7 @@ export default class Main {
         })
     }
 
-    static main(app: Electron.App) {
+    static main(app: Electron.App): void {
         console.log('hello mains')
         Main.application = app
         protocol.registerSchemesAsPrivileged([

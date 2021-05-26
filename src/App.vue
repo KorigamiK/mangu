@@ -1,13 +1,22 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
     <button @click="dynamic_thing='Ha Ha this was tampered with!'">CLICK ME!</button>
-  <HelloWorld msg="Hi Sir, Welcome to Mangu-reader" :derived_message="dynamic_thing"/>
+  <HelloWorld msg="Hi Sir, Welcome to Mangu-reader" :derived_message="dynamic_thing" :secret="my_secret"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
 import { hello } from './api/test'
+import {Blacklist} from './FilterList'
+import electron from 'electron'
+
+require('./TestPlayground')
+
+electron.session.defaultSession.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
+    callback({cancel: true})
+})
+
 console.log(hello.thing)
 export default defineComponent({
   name: 'App',
@@ -15,7 +24,7 @@ export default defineComponent({
     HelloWorld
   },
   data() {
-    return {dynamic_thing: hello.thing}
+    return {dynamic_thing: hello.thing, my_secret: hello.secret}
   }
 });
 </script>
