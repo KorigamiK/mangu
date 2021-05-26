@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain, protocol } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import {Blacklist} from '../FilterList'
+import { Blacklist } from '../FilterList'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -12,7 +12,7 @@ export default class Main {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private static async get_page(url: string, script: string): Promise<any> {
-        let new_window: null|BrowserWindow = new BrowserWindow({
+        let new_window: null | BrowserWindow = new BrowserWindow({
             height: 600, width: 800,
             minHeight: 600, minWidth: 800,
             frame: true,
@@ -21,10 +21,10 @@ export default class Main {
         new_window.webContents.session.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
             callback({cancel: true})
         })
-        new_window.show()
+        // new_window.show()
         await new_window.loadURL(url)
         const ret = await new_window.webContents.executeJavaScript(script, true)
-        // new_window.close()
+        new_window.close()
         new_window.on('closed', function () {
             console.log('closing the window')
             new_window = null
@@ -73,6 +73,9 @@ export default class Main {
             // Load the index.html when not in development
             Main.mainWindow.loadURL('app://./index.html')
           }
+        Main.mainWindow.webContents.session.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
+            callback({cancel: true})
+        })
         Main.mainWindow.on('closed', Main.on_close)
         ipcMain.on('execute_js_sync', async (event, url: string, script: string) => {
             console.log(script)

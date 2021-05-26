@@ -30,7 +30,6 @@ import { hello } from '../api/test'
 let x = new hello()
 console.log(x.thing)
 x.thing = "This was tampered with"
-
 export default defineComponent({
   name: 'HelloWorld',
   props: {

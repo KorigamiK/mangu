@@ -1,4 +1,4 @@
-import electron from 'electron'
+const electron = window.require('electron')
 
 export class request_client {
     get (url: RequestInfo, options: RequestInit={}): Promise<Response> {

@@ -8,15 +8,9 @@
 import { defineComponent } from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
 import { hello } from './api/test'
-import {Blacklist} from './FilterList'
-import electron from 'electron'
+import { test_func } from './TestPlayground'
 
-require('./TestPlayground')
-
-electron.session.defaultSession.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
-    callback({cancel: true})
-})
-
+test_func()
 console.log(hello.thing)
 export default defineComponent({
   name: 'App',
@@ -25,7 +19,7 @@ export default defineComponent({
   },
   data() {
     return {dynamic_thing: hello.thing, my_secret: hello.secret}
-  }
+  },
 });
 </script>
 
