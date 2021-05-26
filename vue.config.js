@@ -1,3 +1,8 @@
 module.exports = {
-  lintOnSave: false
+  lintOnSave: false,
+  pluginOptions: {
+    electronBuilder: {
+      preload: 'src/electronHandler/preload.ts',
+    }
+  }
 }

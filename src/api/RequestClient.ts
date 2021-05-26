@@ -1,5 +1,3 @@
-const electron = window.require('electron')
-
 export class request_client {
     get (url: RequestInfo, options: RequestInit={}): Promise<Response> {
         options.method = 'get'
@@ -18,6 +16,6 @@ export class request_client {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     eval_js(url: string, js_code: string): any {
-        return electron.ipcRenderer.sendSync('execute_js_sync', url, js_code)
+        return ((window as any).ipcRenderer as Electron.IpcRenderer).sendSync('execute_js_sync', url, js_code)
     }
 }

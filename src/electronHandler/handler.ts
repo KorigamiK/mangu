@@ -1,6 +1,7 @@
 import { BrowserWindow, ipcMain, protocol } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { Blacklist } from '../FilterList'
+import path from 'path'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -53,12 +54,12 @@ export default class Main {
         //       console.error('Vue Devtools failed to install:', e.toString())
         //     }
         //   }
-
         Main.mainWindow = new Main.browser_window({
             width: 800, height: 600, webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,
                 enableRemoteModule: true,
+                preload: path.join(__dirname, 'preload.js')
             }
         })
         console.log(process.env.WEBPACK_DEV_SERVER_URL)
@@ -77,10 +78,6 @@ export default class Main {
             callback({cancel: true})
         })
         Main.mainWindow.on('closed', Main.on_close)
-        ipcMain.on('execute_js_sync', async (event, url: string, script: string) => {
-            console.log(script)
-            event.returnValue = await Main.get_page(url, script)
-        })
     }
 
     static main(app: Electron.App): void {
@@ -90,6 +87,10 @@ export default class Main {
             { scheme: 'app', privileges: { secure: true, standard: true } }
           ])
         console.log(app.getAppPath())
+        ipcMain.on('execute_js_sync', async (event, url: string, script: string) => {
+            console.log(script)
+            event.returnValue = await Main.get_page(url, script)
+        })
         Main.application.on('window-all-closed', Main.on_all_window_closed)
         Main.application.on('ready', Main.on_ready)
     }

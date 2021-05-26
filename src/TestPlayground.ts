@@ -1,11 +1,6 @@
 
 export const test_func = () => {
     const request_client = require('./api/RequestClient').request_client
-    // const Blacklist = require('./FilterList').Blacklist
-    // const electron = window.require('electron')
-    // electron.session.defaultSession.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
-    //     callback({cancel: true})
-    // })
     
     console.log('Test file loaded.')
     const client = new request_client()
