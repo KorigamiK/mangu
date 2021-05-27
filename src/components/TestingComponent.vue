@@ -34,7 +34,7 @@ export default defineComponent({
   name: 'Test',
   props: {
     msg: {
-        default: 'default'
+        default: 'Module loaded'
     },
   },
 });
