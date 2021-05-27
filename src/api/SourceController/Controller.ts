@@ -1,4 +1,6 @@
 import mangakomi from './Sources/mangakomi'
+import rawmanga from './Sources/rawmanga'
+
 import {Imanga_source} from './MangaPrimitive'
 
 export interface Isources {
@@ -6,5 +8,6 @@ export interface Isources {
 }
 
 export const sources: Isources = {
-    MangaKomi: new mangakomi()
+    MangaKomi: new mangakomi(),
+    RawManga: new rawmanga()
 } 

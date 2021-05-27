@@ -20,9 +20,12 @@ async function test_source(src: Imanga_source) {
 }
 
 const tester = async (): Promise<void> => {
+    const tasks = []
     for (const source in sources) {
-        await test_source(sources[source])
+        tasks.push(test_source(sources[source]))
     }
+    await Promise.all(tasks)
+    console.log('TESTS COMPLETED!')
 }
 
 (async () => tester())();
