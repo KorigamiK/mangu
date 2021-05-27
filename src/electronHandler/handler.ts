@@ -5,7 +5,7 @@ import path from 'path'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDevelopment = process.env.NODE_ENV !== 'production'
-
+console.log(`Starting in development = ${isDevelopment}`)
 export default class Main {
     static mainWindow: Electron.BrowserWindow | null
     static application: Electron.App
@@ -19,17 +19,24 @@ export default class Main {
             frame: true,
             show: false
         });
-        new_window.webContents.session.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
-            callback({cancel: true})
+        new_window.webContents.session.webRequest.onBeforeSendHeaders(Blacklist, (details, callback) => {
+            callback({ cancel: true })
         })
-        // new_window.show()
-        await new_window.loadURL(url)
-        const ret = await new_window.webContents.executeJavaScript(script, true)
-        new_window.close()
         new_window.on('closed', function () {
             console.log('closing the window')
             new_window = null
         })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let ret: any
+        // new_window.show()
+        try {
+            await new_window.loadURL(url)
+            ret = await new_window.webContents.executeJavaScript(script, true)
+        } catch (err) {
+            ret = err
+        } finally {
+            new_window.close()
+        }
         return ret
     }
 
@@ -59,7 +66,8 @@ export default class Main {
                 nodeIntegration: true,
                 contextIsolation: false,
                 enableRemoteModule: true,
-                preload: path.join(__dirname, 'preload.js')
+                preload: path.join(__dirname, 'preload.js'),
+                webSecurity: false
             }
         })
         console.log(process.env.WEBPACK_DEV_SERVER_URL)
@@ -69,14 +77,22 @@ export default class Main {
             // Load the url of the dev server if in development mode
             await Main.mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
             if (!process.env.IS_TEST) Main.mainWindow.webContents.openDevTools()
-          } else {
+        } else {
             createProtocol('app')
             // Load the index.html when not in development
             Main.mainWindow.loadURL('app://./index.html')
-          }
-        Main.mainWindow.webContents.session.webRequest.onBeforeSendHeaders(Blacklist, (details, callback)=> {
-            callback({cancel: true})
+        }
+        Main.mainWindow.webContents.session.webRequest.onBeforeSendHeaders(Blacklist, (details, callback) => {
+            callback({ cancel: true })
         })
+        // Main.mainWindow.webContents.session.webRequest.onBeforeSendHeaders({
+        //     urls: ['*://*/*']
+        // }, (details, callback)=> {
+        //     console.log('hihi')
+        //     details.requestHeaders['Access-Control-Allow-Origin'] = 'http://localhost:8080'
+        //     callback({ requestHeaders: details.requestHeaders })
+        // })
+
         Main.mainWindow.on('closed', Main.on_close)
     }
 
@@ -85,7 +101,7 @@ export default class Main {
         Main.application = app
         protocol.registerSchemesAsPrivileged([
             { scheme: 'app', privileges: { secure: true, standard: true } }
-          ])
+        ])
         console.log(app.getAppPath())
         ipcMain.on('execute_js_sync', async (event, url: string, script: string) => {
             console.log(script)

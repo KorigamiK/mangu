@@ -1,5 +1,11 @@
 export const Blacklist = {
     urls: ['*://*.2mdnsys.com/*',
+        '*://*.exdynsrv.com/*',
+        '*://*.ackcdn.net/*',
+        '*://*.cdnativepush.com/*',
+        '*://*.betgorebysson.club/*',
+        '*://offerimage.com/*',
+        '*://*.itphanpytor.club/*',
         '*://*.24vunvrv.com/*',
         '*://*.33across.com/*',
         '*://*.360yield.com/*',

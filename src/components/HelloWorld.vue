@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { hello } from '../api/test'
+import { hello } from '../api/test';
 let x = new hello()
 console.log(x.thing)
 x.thing = "This was tampered with"

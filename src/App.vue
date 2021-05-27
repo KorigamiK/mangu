@@ -1,4 +1,5 @@
 <template>
+  <Test/>
   <img alt="Vue logo" src="./assets/logo.png">
     <button @click="dynamic_thing='Ha Ha this was tampered with!'">CLICK ME!</button>
   <HelloWorld msg="Hi Sir, Welcome to Mangu-reader" :derived_message="dynamic_thing" :secret="my_secret"/>
@@ -7,15 +8,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
+import Test from './components/TestingComponent.vue'
 import { hello } from './api/test'
-import { test_func } from './TestPlayground'
-
-test_func()
+// test_func()
 console.log(hello.thing)
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    Test
   },
   data() {
     return {dynamic_thing: hello.thing, my_secret: hello.secret}
