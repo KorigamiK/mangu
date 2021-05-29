@@ -8,7 +8,7 @@ sources as Isources
 
 async function test_source(src: Imanga_source) {
     console.log(src.TITLE)
-    const search_results = await src.search('kanojo')
+    const search_results = await src.search('takagi')
     if (!search_results) {console.log('search failed'); return null}
     const selected_result = search_results[0]
     const chapters = await src.get_chapters(selected_result.url)
@@ -19,6 +19,7 @@ async function test_source(src: Imanga_source) {
     console.log(imgs)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const tester = async (): Promise<void> => {
     const tasks = []
     for (const source in sources) {
@@ -28,7 +29,7 @@ const tester = async (): Promise<void> => {
     console.log('TESTS COMPLETED!')
 }
 
-(async () => tester())();
+// (async () => tester())();
 
 export default defineComponent({
   name: 'Test',
