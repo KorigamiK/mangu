@@ -1,6 +1,6 @@
 <template>
     <div v-for="img in rotate_imgs_offset()" :key="img" class="img-container">
-        <img :src="img" alt="../assets/logo.png"/>
+        <img :src="img" alt="Not able to load the image"/>
     </div>
 </template>
 

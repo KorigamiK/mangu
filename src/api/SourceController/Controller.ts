@@ -7,7 +7,8 @@ export interface Isources {
     [key: string]: Imanga_source
 }
 
+// make sure that the key is the IDENTIFIER of the source
 export const sources: Isources = {
-    MangaKomi: new mangakomi(),
-    RawManga: new rawmanga()
+    mangakomi: new mangakomi(),
+    rawmanga: new rawmanga()
 } 

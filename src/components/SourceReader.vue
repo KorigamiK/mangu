@@ -1,5 +1,5 @@
 <template>
-  this is source reader {{ msg }}
+  <p v-if="msg">{{msg}}</p>
   <MangaPages :imgs="pages" :offset="offset" />
   <!-- <h3>sources are {{ Sources }}</h3> -->
 </template>
@@ -12,7 +12,7 @@ export default defineComponent({
   props: {
     msg: {
       type: String,
-      default: "default",
+      default: "",
     },
     pages: {
       type: Array,
