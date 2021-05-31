@@ -30,6 +30,10 @@ interface Ireader_component {
   index: number;
 }
 
+interface Ireader_conponents {
+    [key: number]: Ireader_component
+}
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -42,16 +46,16 @@ export default defineComponent({
       console.log("message recieved!!");
       console.log(chapter_images);
       this.index += 1;
-      this.reader_components.push({
+      this.reader_components[this.index] = {
         imgs: chapter_images,
         offset: 0,
         index: this.index,
-      });
-      console.log(this.reader_components.length);
+      };
+    console.log('Number of elements updated to: ', Object.keys(this.reader_components).length)
     },
     remove_component(index: number) {
-      this.reader_components = this.reader_components.splice(index, 1)
-      console.log('remining elements are: ', this.reader_components.length)
+      delete this.reader_components[index]
+      console.log('remining elements are: ', Object.keys(this.reader_components).length)
     }
   },
 
@@ -60,7 +64,7 @@ export default defineComponent({
       dynamic_thing: "Superman",
       secret: "Secret: Clark Kent",
       tampered_secret: "Haha You can't see that message again.",
-      reader_components: [] as Ireader_component[],
+      reader_components: {} as Ireader_conponents,
       index: 0,
     };
   },
