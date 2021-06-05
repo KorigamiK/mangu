@@ -2,20 +2,31 @@
   <div class="about">
     <h4>This is the reader {{ dynamic_thing }} {{ secret }}</h4>
   </div>
+  <button class="viewer-button" @click="side_by_side = !side_by_side">
+    Change Viewer
+  </button>
   <Search @load-chapter="push_new_component" />
-  <div class="flex-container">
+  <div class="flex-container" v-if="side_by_side">
     <!-- this whole div tag repeats on every loop -->
-    <div v-for="component in reader_components" :key="component.index" class="flex-child magenta">
-        <button @click=remove_component(component.index)>Remove</button>
-        <button @click="component.offset += 1">Offset +</button>
-        <button @click="component.offset -= 1">Offset -</button>
+    <div
+      v-for="component in reader_components"
+      :key="component.index"
+      class="flex-child magenta"
+    >
+      <button @click="remove_component(component.index)">Remove</button>
+      <button @click="component.offset += 1">Offset +</button>
+      <button @click="component.offset -= 1">Offset -</button>
 
-        <SourceReader
-          :pages="component.imgs"
-          msg=""
-          :offset="component.offset"
-        />
+      <SourceReader :pages="component.imgs" msg="" :offset="component.offset" />
     </div>
+  </div>
+  <div v-else>
+    <CoolReader
+      :reader_components="reader_components"
+      @change-order="change_order()"
+      @offset-plus="offset_plus"
+      @offset-minus="offset_minus"
+    />
   </div>
 </template>
 
@@ -23,6 +34,7 @@
 import { defineComponent } from "vue";
 import SourceReader from "@/components/SourceReader.vue";
 import Search from "@/components/Search.vue";
+import CoolReader from "@/components/CoolReader.vue";
 
 interface Ireader_component {
   imgs: string[];
@@ -31,7 +43,7 @@ interface Ireader_component {
 }
 
 interface Ireader_conponents {
-    [key: number]: Ireader_component
+  [key: number]: Ireader_component;
 }
 
 export default defineComponent({
@@ -39,6 +51,7 @@ export default defineComponent({
   components: {
     SourceReader,
     Search,
+    CoolReader,
   },
 
   methods: {
@@ -51,12 +64,38 @@ export default defineComponent({
         offset: 0,
         index: this.index,
       };
-    console.log('Number of elements updated to: ', Object.keys(this.reader_components).length)
+      console.log(
+        "Number of elements updated to: ",
+        Object.keys(this.reader_components).length
+      );
     },
     remove_component(index: number) {
-      delete this.reader_components[index]
-      console.log('remining elements are: ', Object.keys(this.reader_components).length)
-    }
+      delete this.reader_components[index];
+      console.log(
+        "remining elements are: ",
+        Object.keys(this.reader_components).length
+      );
+    },
+    change_order() {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      console.log(this.reader_components);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const first_manga = this.reader_components[Object.keys(this.reader_components)[0] as any];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete this.reader_components[Object.keys(this.reader_components)[0] as any];
+      console.log(this.reader_components);
+      this.reader_components[this.counter] = first_manga;
+      this.counter += 1;
+      console.log(this.reader_components);
+    },
+    offset_plus(key: number) {
+      console.log(key);
+      this.reader_components[key].offset += 1;
+    },
+    offset_minus(key: number) {
+      console.log(key);
+      this.reader_components[key].offset -= 1;
+    },
   },
 
   data() {
@@ -66,6 +105,8 @@ export default defineComponent({
       tampered_secret: "Haha You can't see that message again.",
       reader_components: {} as Ireader_conponents,
       index: 0,
+      side_by_side: false,
+      counter: 50,
     };
   },
 });
@@ -79,6 +120,16 @@ export default defineComponent({
 .flex-child {
   flex: 1;
   border: 2px solid rgb(53, 53, 53);
+}
+
+.viewer-button {
+  background: #0b6dff;
+  border: 0;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: white;
+  border-radius: 20px;
 }
 
 .flex-child:first-child {

@@ -63,6 +63,7 @@ export default class Main {
         //   }
         Main.mainWindow = new Main.browser_window({
             width: 800, height: 600, webPreferences: {
+                backgroundColor: '#FFF',
                 nodeIntegration: true,
                 contextIsolation: false,
                 enableRemoteModule: true,
