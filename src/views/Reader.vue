@@ -1,19 +1,17 @@
 <template>
-  <div class="about">
-    <h4>This is the reader {{ dynamic_thing }} {{ secret }}</h4>
-  </div>
+  <Search @load-chapter="push_new_component" />
+  <br />
   <button class="viewer-button" @click="side_by_side = !side_by_side">
     Change Viewer
   </button>
-  <Search @load-chapter="push_new_component" />
   <div class="flex-container" v-if="side_by_side">
     <!-- this whole div tag repeats on every loop -->
     <div
-      v-for="component in reader_components"
+      v-for="(component, component_key) in reader_components"
       :key="component.index"
       class="flex-child magenta"
     >
-      <button @click="remove_component(component.index)">Remove</button>
+      <button @click="remove_component(component_key)">Remove</button>
       <button @click="component.offset += 1">Offset +</button>
       <button @click="component.offset -= 1">Offset -</button>
 

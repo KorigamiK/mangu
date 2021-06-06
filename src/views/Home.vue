@@ -1,14 +1,16 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <button @click="dynamic_thing = 'Ha Ha this was tampered with!'">
-      CLICK ME!
-    </button>
+    <br/>
     <HelloWorld
-      msg="Hi Sir, Welcome to Mangu-reader"
+      msg="Welcome to Mangu-reader"
       :derived_message="dynamic_thing"
       :secret="tampered_secret"
     />
+    <button @click="dynamic_thing = 'Ha Ha this was tampered with!'">
+      Useless Button
+    </button>
+
   </div>
 </template>
 

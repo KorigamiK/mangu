@@ -1,5 +1,6 @@
 <template>
-  <div class="change-button">
+  <div class="change-button" v-if="Object.keys(reader_components).length !== 0">
+    <div class="active-text">Currently active: {{ Object.keys(reader_components)[Object.keys(reader_components).length -1] }}</div>
     <button @click="$emit('change-order')">Change Order</button>
     <div>
       <button
@@ -10,7 +11,6 @@
         {{ key }} +
       </button>
     </div>
-    <!-- <br /> -->
     <div>
       <button
         v-for="key in Object.keys(reader_components)"
@@ -21,7 +21,7 @@
       </button>
     </div>
   </div>
-  <div v-if="!!reader_components" class="align-left">
+  <div v-if="Object.keys(reader_components).length !== 0" class="align-left">
     <div v-for="images in get_manga()" :key="images" class="container">
       <img
         v-for="image in images"
@@ -29,6 +29,7 @@
         class="inner"
         style="background-color: white"
         :src="image"
+        alt="Loading image"
       />
       &nbsp;
     </div>
@@ -50,7 +51,7 @@ interface Ireader_conponents {
 
 export default defineComponent({
   data() {
-    return { z_index_iterator: 1, current_z_index: 1 };
+    return {  };
   },
 
   emits: ["change-order", "offset-plus", "offset-minus"],
@@ -93,26 +94,12 @@ export default defineComponent({
       }
       return zipLongest(undefined, ...images_array);
     },
-    get_z_index() {
-      let ret: number = this.z_index_iterator;
-      if (
-        this.z_index_iterator !== Object.keys(this.reader_components).length
-      ) {
-        this.z_index_iterator += 1;
-      } else {
-        this.z_index_iterator = 1;
-      }
-      console.log(ret);
-      return ret;
-    },
+
     offset_plus(key: number) {
-      // console.log(key, typeof key)
-      // console.log(this.reader_components[key])
       this.$emit("offset-plus", key);
     },
+
     offset_minus(key: number) {
-      // console.log(key, typeof key)
-      // console.log(this.reader_components[key])
       this.$emit("offset-minus", key);
     },
   },
@@ -153,6 +140,8 @@ export default defineComponent({
   cursor: pointer;
   padding: 5px 10px;
   font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 .change-button {
@@ -182,5 +171,11 @@ export default defineComponent({
 
 .hide {
   display: none;
+}
+
+.active-text {
+  background-color:rgb(214, 214, 214);
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
 </style>
