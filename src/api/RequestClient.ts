@@ -14,9 +14,9 @@ export class request_client {
         const mime = 'text/html'
         return new DOMParser().parseFromString(body, mime)
     }
-
-    eval_js(url: string, js_code: string): any {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async eval_js(url: string, js_code: string): Promise<any> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return ((window as any).ipcRenderer as Electron.IpcRenderer).sendSync('execute_js_sync', url, js_code)
+        return await ((window as any).ipcRenderer as Electron.IpcRenderer).invoke('execute_js_sync', url, js_code)
     }
 }

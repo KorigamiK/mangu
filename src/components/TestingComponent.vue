@@ -2,6 +2,7 @@
 import { defineComponent } from "vue";
 import { sources, Isources } from "../api/SourceController/Controller";
 import { Imanga_source } from "../api/SourceController/MangaPrimitive";
+import { non_renderer } from "../api/SourceController/NonRenderer/Test";
 
 console.log("Testing component loaded");
 sources as Isources;
@@ -33,17 +34,27 @@ const tester = async (): Promise<void> => {
 };
 
 // (async () => tester())();
+const renderer_test = new non_renderer()
 
 export default defineComponent({
   name: "Test",
+  created() {
+    this.get_img()
+  },
   props: {
     msg: {
       default: "Module loaded",
     },
   },
+  methods: {
+    async get_img(){
+      this.img_url = await renderer_test.test_method()
+      }
+  },
   data() {
       return {
-          page_button: false
+        page_button: false,
+        img_url: ''
       }
   }
 });
@@ -53,7 +64,7 @@ export default defineComponent({
   <h3>Testing {{ msg }}</h3>
   <button @click="page_button=!page_button" class="change-button">change!</button>
   <div class="container">
-    <img class="inner" :class="page_button ? 'hide' : ''" style="background-color: white" src="https://raw.senmanga.com/viewer/Karakai-Jouzu-no-Takagi-san/122/1" />
+    <img class="inner" :class="page_button ? 'hide' : ''" style="background-color: white" :src="img_url" />
     <img :class="!page_button ? 'hide' : ''" class="inner" style="background-color: white" src="https://raw.senmanga.com/viewer/Karakai-Jouzu-no-Takagi-san/122/2" />
   </div>
 </template>

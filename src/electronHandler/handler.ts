@@ -2,6 +2,7 @@ import { BrowserWindow, ipcMain, protocol } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { Blacklist } from '../FilterList'
 import path from 'path'
+import { non_renderer_requests_client } from './nonRendererRequestsClient'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -38,6 +39,12 @@ export default class Main {
             new_window.close()
         }
         return ret
+    }
+
+    private static request_client_init() {
+        ipcMain.handle('get_body', async (event, url=non_renderer_requests_client.test_url, options=undefined) => {
+            return await non_renderer_requests_client.get_body(url as string, options)
+        })
     }
 
     private static on_all_window_closed() {
@@ -104,11 +111,12 @@ export default class Main {
             { scheme: 'app', privileges: { secure: true, standard: true } }
         ])
         console.log(app.getAppPath())
-        ipcMain.on('execute_js_sync', async (event, url: string, script: string) => {
+        ipcMain.handle('execute_js_sync', async (event, url: string, script: string) => {
             console.log(script)
-            event.returnValue = await Main.get_page(url, script)
+            return await Main.get_page(url, script)
         })
         Main.application.on('window-all-closed', Main.on_all_window_closed)
         Main.application.on('ready', Main.on_ready)
+        Main.request_client_init()
     }
 }
