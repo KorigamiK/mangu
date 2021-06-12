@@ -4,7 +4,6 @@ import { Blacklist } from '../FilterList'
 import path from 'path'
 import { non_renderer_requests_client } from './nonRendererRequestsClient'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDevelopment = process.env.NODE_ENV !== 'production'
 console.log(`Starting in development = ${isDevelopment}`)
 export default class Main {
@@ -78,9 +77,9 @@ export default class Main {
                 webSecurity: false
             }
         })
+
+        Main.mainWindow.webContents.setVisualZoomLevelLimits(1, 3)
         console.log(process.env.WEBPACK_DEV_SERVER_URL)
-        // console.log(process.env)
-        // Main.mainWindow.loadFile('../index.html')
         if (process.env.WEBPACK_DEV_SERVER_URL) {
             // Load the url of the dev server if in development mode
             await Main.mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
@@ -96,7 +95,6 @@ export default class Main {
         // Main.mainWindow.webContents.session.webRequest.onBeforeSendHeaders({
         //     urls: ['*://*/*']
         // }, (details, callback)=> {
-        //     console.log('hihi')
         //     details.requestHeaders['Access-Control-Allow-Origin'] = 'http://localhost:8080'
         //     callback({ requestHeaders: details.requestHeaders })
         // })
@@ -105,7 +103,6 @@ export default class Main {
     }
 
     static main(app: Electron.App): void {
-        console.log('hello mains')
         Main.application = app
         protocol.registerSchemesAsPrivileged([
             { scheme: 'app', privileges: { secure: true, standard: true } }

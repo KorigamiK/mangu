@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Imanga_source, manga_primitive, Isearch_results, Ichapter } from '../MangaPrimitive'
 
 export default class rawmanga extends manga_primitive implements Imanga_source {
@@ -29,12 +30,11 @@ export default class rawmanga extends manga_primitive implements Imanga_source {
         const html = await this.get(urlOrSlug)
         const dom = await this.fetch_html(await html.text())
         const chapters: Ichapter[] = []
-        dom.querySelectorAll('#chapter-list > ul > li > a').forEach((ele) => chapters.push({title: ele.getAttribute('href')!, url: ele.getAttribute('href')!}))
+        dom.querySelectorAll('#chapter-list > ul > li > a').forEach((ele) => chapters.push({title: ele.textContent!, url: ele.getAttribute('href')!}))
         return chapters
     }
 
     get_images = async (url: string): Promise<Array<string>> => {
-        console.log(url)
         const body = await (await this.get(url)).text()
         const dom = await this.fetch_html(body)
         let imgs: Array<string> = []

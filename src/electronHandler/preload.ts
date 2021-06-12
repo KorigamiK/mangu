@@ -1,4 +1,4 @@
-import { ipcRenderer, webFrame } from 'electron'
+import { ipcRenderer, } from 'electron'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).ipcRenderer= ipcRenderer
-webFrame.setVisualZoomLevelLimits(1, 2);

@@ -15,7 +15,7 @@
       <button @click="component.offset += 1">Offset +</button>
       <button @click="component.offset -= 1">Offset -</button>
 
-      <SourceReader :pages="component.imgs" msg="" :offset="component.offset" />
+      <SourceReader :pages="component.imgs" :msg="component.chapter_title" :offset="component.offset" />
     </div>
   </div>
   <div v-else>
@@ -38,6 +38,7 @@ interface Ireader_component {
   imgs: string[];
   offset: number;
   index: number;
+  chapter_title: string;
 }
 
 interface Ireader_conponents {
@@ -53,14 +54,13 @@ export default defineComponent({
   },
 
   methods: {
-    push_new_component(chapter_images: string[]) {
-      console.log("message recieved!!");
-      console.log(chapter_images);
+    push_new_component(chapter_images: string[], chapter_title: string) {
       this.index += 1;
       this.reader_components[this.index] = {
         imgs: chapter_images,
         offset: 0,
         index: this.index,
+        chapter_title: chapter_title,
       };
       console.log(
         "Number of elements updated to: ",
@@ -76,15 +76,11 @@ export default defineComponent({
     },
     change_order() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      console.log(this.reader_components);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const first_manga = this.reader_components[Object.keys(this.reader_components)[0] as any];
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete this.reader_components[Object.keys(this.reader_components)[0] as any];
-      console.log(this.reader_components);
       this.reader_components[this.counter] = first_manga;
       this.counter += 1;
-      console.log(this.reader_components);
     },
     offset_plus(key: number) {
       console.log(key);

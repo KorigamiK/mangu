@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Imanga_source, manga_primitive, Isearch_results, Ichapter } from '../MangaPrimitive'
 
 export default class mangakomi extends manga_primitive implements Imanga_source {
@@ -30,7 +31,6 @@ export default class mangakomi extends manga_primitive implements Imanga_source 
     }
 
     get_images = async (url: string): Promise<Array<string>> => {
-        console.log(url)
         const body = await (await this.get(url)).text()
         const dom = await this.fetch_html(body)
         const imgs: Array<string> = []

@@ -21,6 +21,7 @@
       </button>
     </div>
   </div>
+  <p v-for="{ chapter_title } in reader_components" :key="chapter_title" class="chapters"> {{chapter_title}} </p>
   <div v-if="Object.keys(reader_components).length !== 0" class="align-left">
     <div v-for="images in get_manga()" :key="images" class="container">
       <img
@@ -43,6 +44,7 @@ interface Ireader_component {
   imgs: string[];
   offset: number;
   index: number;
+  chapter_title: string;
 }
 
 interface Ireader_conponents {
@@ -177,5 +179,13 @@ export default defineComponent({
   background-color:rgb(214, 214, 214);
   border-radius: 8px;
   margin-bottom: 8px;
+}
+
+.chapters {
+  display: inline;
+  border-radius: 5px;
+  background-color: bisque;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 </style>

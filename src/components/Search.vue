@@ -69,13 +69,8 @@ export default defineComponent({
   methods: {
     async handel_search() {
       console.log(this.search_query, this.selected_source);
-      const results = await sources[this.selected_source].search(
-        this.search_query
-      );
+      const results = await sources[this.selected_source].search(this.search_query);
       this.search_results = results ? results : [{ title: "", url: "" }];
-      console.log(
-        await sources[this.selected_source].search(this.search_query)
-      );
       this.show_results = true;
       this.show_form = false;
     },
@@ -89,7 +84,7 @@ export default defineComponent({
 
     async select_chapter(chapter: Ichapter, source_identifier: string) {
       const chapter_images = await sources[source_identifier].get_images(chapter.url)
-      this.$emit('load-chapter', chapter_images)
+      this.$emit('load-chapter', chapter_images, source_identifier + ' - ' + chapter.title)
       this.show_chapters = false
     }
   },
