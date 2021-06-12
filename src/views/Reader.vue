@@ -126,6 +126,7 @@ export default defineComponent({
   cursor: pointer;
   padding: 10px 20px;
   margin-top: 20px;
+  margin-bottom: 20px;
   color: white;
   border-radius: 20px;
 }

@@ -42,8 +42,8 @@ export default class Main {
     }
 
     private static request_client_init() {
-        ipcMain.handle('get_body', async (event, url=non_renderer_requests_client.test_url, options=undefined) => {
-            return await non_renderer_requests_client.get_body(url as string, options)
+        ipcMain.handle('get_encoded_response', async (event, url=non_renderer_requests_client.test_url, options=undefined) => {
+            return await non_renderer_requests_client.get_encoded_response(url as string, options)
         })
     }
 

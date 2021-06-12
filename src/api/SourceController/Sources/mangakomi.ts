@@ -1,4 +1,4 @@
-import { Imanga_source, manga_primitive, Isearch_results } from '../MangaPrimitive'
+import { Imanga_source, manga_primitive, Isearch_results, Ichapter } from '../MangaPrimitive'
 
 export default class mangakomi extends manga_primitive implements Imanga_source {
     public constructor() {
@@ -21,12 +21,11 @@ export default class mangakomi extends manga_primitive implements Imanga_source 
         }
     }
 
-    get_chapters = async (url: string): Promise<Array<string>> => {
+    get_chapters = async (url: string): Promise<Array<Ichapter>> => {
         const html = await this.get(url)
         const dom = await this.fetch_html(await html.text())
-        const chapters: Array<string> = []
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        dom.querySelectorAll('li.wp-manga-chapter > a').forEach((ele) => chapters.push((ele as any).href))
+        const chapters = [] as Ichapter[]
+        dom.querySelectorAll('li.wp-manga-chapter > a').forEach((ele) => chapters.push({title: ele.textContent!.trim(), url: ele.getAttribute('href')!}))
         return chapters
     }
 

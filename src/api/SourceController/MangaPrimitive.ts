@@ -16,19 +16,25 @@ export abstract class manga_primitive extends request_client{
 
 export interface search_result {
     title: string,
+    url: string,
     slug? : string,
     alt_name?: string,
     author?: string,
     rank?: number,
     categories?: string,
     img?: string,
-    url: string,
+    latest?: string
 }
 
 export type Isearch_results = Array<search_result>
 
+export interface Ichapter {
+    url: string,
+    title: string,
+}
+
 export interface Imanga_source extends manga_primitive{
     search: (query: string) => Promise<Isearch_results | null>,
-    get_chapters : (slugorurl: string) => Promise<Array<string>>,
+    get_chapters : (slugorurl: string) => Promise<Array<Ichapter>>,
     get_images: (url: string) => Promise<Array<string>>
 }

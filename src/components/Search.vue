@@ -1,7 +1,7 @@
 <template>
   <div v-if="!show_form"><button @click="show_form = true; show_chapters=false">Add source</button></div>
   <div v-if="show_chapters"><button @click="show_chapters=false">Hide Chapters</button></div>
-  <div v-if="chapters !== ['nothing'] && !show_chapters"><button @click="show_chapters=true">Show Chapters</button></div>
+  <div v-if="chapters !== [{}] && !show_chapters"><button @click="show_chapters=true">Show Chapters</button></div>
 
   <form @submit.prevent="handel_search" v-if="show_form">
     <h3>Pick</h3>
@@ -38,9 +38,9 @@
       <br />
     </div>
   </div>
-  <div class="chapters" v-if="show_chapters">
-    <div class="chapters-contain" v-for="chapter in chapters" :key="chapter">
-      <p class="pill" @click="select_chapter(chapter, selected_source)">{{ chapter }}</p>
+  <div class="chapters" v-show="show_chapters">
+    <div class="chapters-contain" v-for="chapter in chapters" :key="chapter.title">
+      <p class="pill" @click="select_chapter(chapter, selected_source)">{{ chapter.title }}</p>
     </div>
   </div>
 
@@ -49,7 +49,7 @@
 <script lang='ts'>
 import { defineComponent } from "vue";
 import { sources } from "../api/SourceController/Controller";
-import { search_result, Isearch_results } from "../api/SourceController/MangaPrimitive";
+import { search_result, Isearch_results, Ichapter } from "../api/SourceController/MangaPrimitive";
 
 export default defineComponent({
   name: "Search",
@@ -63,7 +63,7 @@ export default defineComponent({
       show_form: true,
       search_results: [{}] as Isearch_results,
       show_chapters: false,
-      chapters: ['nothing']
+      chapters: [{}] as Ichapter[]
     };
   },
   methods: {
@@ -87,8 +87,8 @@ export default defineComponent({
       this.show_chapters = true
     },
 
-    async select_chapter(chapter: string, source_identifier: string) {
-      const chapter_images = await sources[source_identifier].get_images(chapter)
+    async select_chapter(chapter: Ichapter, source_identifier: string) {
+      const chapter_images = await sources[source_identifier].get_images(chapter.url)
       this.$emit('load-chapter', chapter_images)
       this.show_chapters = false
     }

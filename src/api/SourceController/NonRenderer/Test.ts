@@ -4,7 +4,7 @@ export class non_renderer {
 
     public async test_method(): Promise<string> {
         console.log('hi from the renderer')
-        const img_src: string = await this.ipcRenderer.invoke('get_body')
+        const img_src: string = await this.ipcRenderer.invoke('get_encoded_response')
         return img_src
     }
 } 

@@ -1,4 +1,4 @@
-import { Imanga_source, manga_primitive, Isearch_results } from '../MangaPrimitive'
+import { Imanga_source, manga_primitive, Isearch_results, Ichapter } from '../MangaPrimitive'
 
 export default class rawmanga extends manga_primitive implements Imanga_source {
     public constructor() {
@@ -24,13 +24,12 @@ export default class rawmanga extends manga_primitive implements Imanga_source {
         }
     }
 
-    get_chapters = async (urlOrSlug: string): Promise<Array<string>> => {
+    get_chapters = async (urlOrSlug: string): Promise<Array<Ichapter>> => {
         urlOrSlug = urlOrSlug.includes('rawmanga') ? urlOrSlug : this.WEBSITE_HOME + urlOrSlug
         const html = await this.get(urlOrSlug)
         const dom = await this.fetch_html(await html.text())
-        const chapters: Array<string> = []
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        dom.querySelectorAll('#chapter-list > ul > li > a').forEach((ele) => chapters.push((ele as any).href))
+        const chapters: Ichapter[] = []
+        dom.querySelectorAll('#chapter-list > ul > li > a').forEach((ele) => chapters.push({title: ele.getAttribute('href')!, url: ele.getAttribute('href')!}))
         return chapters
     }
 
