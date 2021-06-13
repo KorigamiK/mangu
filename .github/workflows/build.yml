@@ -29,8 +29,8 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            Test upload-to-github-release works with ```actions/create-release```
-          draft: true
+            Automated Release Upload 
+          draft: false
           prerelease: true
 
       - name: Upload release
