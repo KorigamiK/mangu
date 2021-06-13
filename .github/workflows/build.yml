@@ -33,8 +33,10 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload release
+      - name: Created files
         run: ls -l ./dist_electron
+
+      - name: Upload release
         uses: xresloader/upload-to-github-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
