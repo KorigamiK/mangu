@@ -1,12 +1,18 @@
-name: release
+name: Build/release
 
 on: push
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest]
+
     steps:
-      - uses: actions/checkout@v1
+      - name: Check out Git repository
+        uses: actions/checkout@v1
 
       - name: "Install Node.js, NPM and Yarn"
         uses: actions/setup-node@v1
@@ -28,10 +34,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
-          tag_name: continuous
+          file: "*.md;dist_electron/*.exe;LICENSE"
+          tag_name: continuous_win
           tags: false
-          release_id: ${{ steps.create_release.outputs.id }}
           overwrite: true
           verbose: true
           update_latest_release: true
