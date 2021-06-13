@@ -20,27 +20,20 @@ jobs:
           npm i
           npm run electron:build        
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Automated Release Upload 
-          draft: false
-          prerelease: false
+      - name: Created files
+        run: ls -l ./dist_electron
 
-      - uses: xresloader/upload-to-github-release@master
+      - name: Upload release
+        uses: xresloader/upload-to-github-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
+          tag_name: continuous
+          tags: false
           release_id: ${{ steps.create_release.outputs.id }}
           overwrite: true
           verbose: true
-          
-      - name: Created files
-        run: ls -l ./dist_electron
+          update_latest_release: true
+          draft: false
+          prerelease: false
