@@ -1,7 +1,12 @@
 {
-  "name": "test",
-  "version": "0.1.0",
-  "private": true,
+  "name": "mangu-reader",
+  "version": "1.0.0",
+  "private": false,
+  "description": "A Manga reader that lets you learn.",
+  "repository": "https://github.com/korigamik/mangu",
+  "keywords": ["manga", "mangu", "reader", "comic", "origami"],
+  "author": "KorigamiK <korigamik@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -9,7 +14,8 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "electron:build:linux": "vue-cli-service electron:build --linux"
   },
   "main": "background.js",
   "dependencies": {

@@ -24,6 +24,7 @@
       @change-order="change_order()"
       @offset-plus="offset_plus"
       @offset-minus="offset_minus"
+      @remove-component="remove_component"
     />
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="change-button" v-if="Object.keys(reader_components).length !== 0">
     <div class="active-text">Currently active: {{ Object.keys(reader_components)[Object.keys(reader_components).length -1] }}</div>
-    <button @click="$emit('change-order')">Change Order</button>
+    <button @click="$emit('change-order')">Change Order ']'</button>
     <div>
       <button
         v-for="key in Object.keys(reader_components)"
@@ -21,7 +21,7 @@
       </button>
     </div>
   </div>
-  <p v-for="{ chapter_title } in reader_components" :key="chapter_title" class="chapters"> {{chapter_title}} </p>
+  <p v-for="({ chapter_title }, component_key) in reader_components" :key="chapter_title" @click="remove_component(component_key)" class="chapters"> {{chapter_title}} ✖ </p>
   <div v-if="Object.keys(reader_components).length !== 0" class="align-left">
     <div v-for="images in get_manga()" :key="images" class="container">
       <img
@@ -56,7 +56,16 @@ export default defineComponent({
     return {  };
   },
 
-  emits: ["change-order", "offset-plus", "offset-minus"],
+  mounted() {
+    const emit = this.$emit
+    window.addEventListener('keypress', function(event) {
+        if (event.key === ']') {
+            emit('change-order')
+        }
+    })
+  },
+
+  emits: ["change-order", "offset-plus", "offset-minus", "remove-component"],
 
   props: {
     reader_components: {
@@ -104,6 +113,11 @@ export default defineComponent({
     offset_minus(key: number) {
       this.$emit("offset-minus", key);
     },
+
+    remove_component(component_key: number) {
+      this.$emit('remove-component', component_key)
+    },
+
   },
 });
 </script>
@@ -187,5 +201,7 @@ export default defineComponent({
   background-color: bisque;
   margin-right: 10px;
   margin-left: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
 }
 </style>

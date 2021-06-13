@@ -69,14 +69,20 @@ export default defineComponent({
   methods: {
     async handel_search() {
       console.log(this.search_query, this.selected_source);
-      const results = await sources[this.selected_source].search(this.search_query);
+      let results: Isearch_results | null
+      try{
+        results = await sources[this.selected_source].search(this.search_query);
+      }catch(e){
+        console.log('something went wrong while getting results')
+        results = null
+      }
       this.search_results = results ? results : [{ title: "", url: "" }];
       this.show_results = true;
       this.show_form = false;
     },
 
     async select_result(result: search_result, source_identifier: string) {
-      console.log(result, source_identifier);
+      console.log(source_identifier);
       this.chapters = await sources[source_identifier].get_chapters(result.url)
       this.show_results = false;
       this.show_chapters = true
