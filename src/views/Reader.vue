@@ -21,6 +21,7 @@
   <div v-else>
     <CoolReader
       :reader_components="reader_components"
+      :change_order_keyboard_listener="change_order_keyboard_listener"
       @change-order="change_order()"
       @offset-plus="offset_plus"
       @offset-minus="offset_minus"
@@ -54,7 +55,21 @@ export default defineComponent({
     CoolReader,
   },
 
+  mounted() {
+    this.change_order_keyboard_listener = this.change_order_listener_wraper(this)    
+  },
+
   methods: {
+    // hack to bypass the fact that 'this' is already used by the browser
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    change_order_listener_wraper(self: any) {
+      return function(event: KeyboardEvent) {
+        if (event.key === ']') {
+            self.change_order()
+        }
+      }
+    },
+
     push_new_component(chapter_images: string[], chapter_title: string) {
       this.index += 1;
       this.reader_components[this.index] = {
@@ -67,7 +82,12 @@ export default defineComponent({
         "Number of elements updated to: ",
         Object.keys(this.reader_components).length
       );
+      if (Object.keys(this.reader_components).length === 1) {
+        console.log('added listener')
+        window.addEventListener('keypress', this.change_order_keyboard_listener)
+      }
     },
+
     remove_component(index: number) {
       delete this.reader_components[index];
       console.log(
@@ -84,11 +104,9 @@ export default defineComponent({
       this.counter += 1;
     },
     offset_plus(key: number) {
-      console.log(key);
       this.reader_components[key].offset += 1;
     },
     offset_minus(key: number) {
-      console.log(key);
       this.reader_components[key].offset -= 1;
     },
   },
@@ -102,6 +120,8 @@ export default defineComponent({
       index: 0,
       side_by_side: false,
       counter: 50,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      change_order_keyboard_listener: function(e: KeyboardEvent) {return},
     };
   },
 });

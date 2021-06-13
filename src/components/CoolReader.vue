@@ -56,15 +56,6 @@ export default defineComponent({
     return {  };
   },
 
-  mounted() {
-    const emit = this.$emit
-    window.addEventListener('keypress', function(event) {
-        if (event.key === ']') {
-            emit('change-order')
-        }
-    })
-  },
-
   emits: ["change-order", "offset-plus", "offset-minus", "remove-component"],
 
   props: {
@@ -72,6 +63,10 @@ export default defineComponent({
       type: Object as PropType<Ireader_conponents>,
       required: true,
     },
+    change_order_keyboard_listener: {
+      type: Function as PropType<(event: KeyboardEvent) => void>,
+      required: true
+    }
   },
 
   methods: {
@@ -116,6 +111,10 @@ export default defineComponent({
 
     remove_component(component_key: number) {
       this.$emit('remove-component', component_key)
+      if (Object.keys(this.reader_components).length === 0) {
+        window.removeEventListener('keypress', this.change_order_keyboard_listener)
+        console.log('listener removed')
+      }
     },
 
   },
