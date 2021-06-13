@@ -38,7 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "*.md;*.deb;*.AppImage"
+          file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage"
           release_id: ${{ steps.create_release.outputs.id }}
           overwrite: true
           verbose: true
