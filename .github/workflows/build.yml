@@ -31,14 +31,15 @@ jobs:
           body: |
             Automated Release Upload 
           draft: false
-          prerelease: true
+          prerelease: false
 
       - name: Upload release
+        run: ls -l ./dist_electron
         uses: xresloader/upload-to-github-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage"
+          file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
           release_id: ${{ steps.create_release.outputs.id }}
           overwrite: true
           verbose: true
