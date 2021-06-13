@@ -1,4 +1,4 @@
-name: Build/release
+name: Release/Windows
 
 on: push
 
@@ -27,7 +27,7 @@ jobs:
           npm run electron:build        
 
       - name: Created files
-        run: ls -l ./dist_electron
+        run: dir ./dist_electron
 
       - name: Upload release
         uses: xresloader/upload-to-github-release@master
@@ -35,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "*.md;dist_electron/*.exe;LICENSE"
-          tag_name: continuous_win
+          tag_name: continuous_release
           tags: false
           overwrite: true
           verbose: true

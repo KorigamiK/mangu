@@ -1,4 +1,4 @@
-name: release
+name: Release/Linux
 
 on: push
 
@@ -29,7 +29,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
-          tag_name: continuous_linux
+          tag_name: continuous_release
           tags: false
           overwrite: true
           verbose: true
