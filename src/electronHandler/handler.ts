@@ -74,7 +74,7 @@ export default class Main {
                 contextIsolation: false,
                 enableRemoteModule: true,
                 preload: path.join(__dirname, 'preload.js'),
-                webSecurity: false
+                webSecurity: false,
             }
         })
 
