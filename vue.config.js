@@ -7,6 +7,7 @@ module.exports = {
         "appId": "com.korigamik.mangu-reader",
         "productName": "ManguReader",
         "linux": {
+          "icon": "build/icon.png",
           "target": [
             "deb",
             "AppImage"

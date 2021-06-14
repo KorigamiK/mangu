@@ -4,7 +4,7 @@
   <div v-if="chapters !== [{}] && !show_chapters"><button @click="show_chapters=true">Show Chapters</button></div>
 
   <form @submit.prevent="handel_search" v-if="show_form">
-    <h3>Pick</h3>
+    <h3>Search</h3>
     <label>Series Name</label>
     <input type="search_query" v-model="search_query" required />
 
@@ -19,8 +19,8 @@
       </option>
     </select>
     <div class="submit">
-      <button :class="[!selected_source && !search_query ? 'inactive' : '']">
-        Search
+      <button :class="[!selected_source && !search_query ? 'inactive' : 'active']">
+        Go
       </button>
     </div>
   </form>
@@ -101,13 +101,14 @@ export default defineComponent({
 form {
   max-width: 420px;
   margin: 30px auto;
-  background: rgb(255, 231, 231);
+  background: #5a6d60;
   text-align: left;
   padding: 40px;
   border-radius: 10px;
+  color: #ffffff;
 }
 label {
-  color: #aaa;
+  color: #ffffff;
   display: inline-block;
   margin: 25px 0 15px;
   font-size: 0.6em;
@@ -145,12 +146,12 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 button {
-  background: #0b6dff;
+  background: #5a6d60;
   border: 0;
   cursor: pointer;
   padding: 10px 20px;
   margin-top: 20px;
-  color: white;
+  color: #ffffff;
   border-radius: 20px;
 }
 .submit {
@@ -158,5 +159,8 @@ button {
 }
 .inactive {
   background: #aaa;
+}
+.active {
+  background: rgb(75, 138, 117);
 }
 </style>

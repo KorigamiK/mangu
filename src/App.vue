@@ -28,7 +28,12 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #e2e2e2;
+}
+
+body {
+  background-color: rgb(48, 48, 48);
+  color: #e6e6e6
 }
 
 #nav {
@@ -37,10 +42,19 @@ export default defineComponent({
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #e6e6e6;
 }
 
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.dark-background {
+  background-color: aliceblue;
+}
+
+.dark-mode {
+  color: #e6e6e6
+}
+
 </style>

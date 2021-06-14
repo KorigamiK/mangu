@@ -22,7 +22,7 @@
     </div>
   </div>
   <p v-for="({ chapter_title }, component_key) in reader_components" :key="chapter_title" @click="remove_component(component_key)" class="chapters"> {{chapter_title}} ✖ </p>
-  <div v-if="Object.keys(reader_components).length !== 0" class="align-left">
+  <div v-if="Object.keys(reader_components).length !== 0" class="align-left image-container">
     <div v-for="images in get_manga()" :key="images" class="container">
       <img
         v-for="image in images"
@@ -189,9 +189,14 @@ export default defineComponent({
 }
 
 .active-text {
-  background-color:rgb(214, 214, 214);
-  border-radius: 8px;
+  background-color:#eee;
+  border-radius: 13px;
   margin-bottom: 8px;
+  color: #777;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  padding: 6px 6px 6px 6px
 }
 
 .chapters {
@@ -201,6 +206,13 @@ export default defineComponent({
   margin-right: 10px;
   margin-left: 10px;
   margin-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
   cursor: pointer;
+  color: #4e4e4e
+}
+
+.image-container {
+  margin-top: 20px;
 }
 </style>

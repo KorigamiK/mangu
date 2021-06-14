@@ -61,7 +61,7 @@ export default defineComponent({
 
   methods: {
     // hack to bypass the fact that 'this' is already used by the browser
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     change_order_listener_wraper(self: any) {
       return function(event: KeyboardEvent) {
         if (event.key === ']') {
@@ -138,13 +138,13 @@ export default defineComponent({
 }
 
 .viewer-button {
-  background: #0b6dff;
+  background: #5a6d60;
   border: 0;
   cursor: pointer;
   padding: 10px 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-  color: white;
+  color: #ffffff;
   border-radius: 20px;
 }
 
