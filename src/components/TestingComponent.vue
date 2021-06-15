@@ -32,12 +32,13 @@ const tester = async (): Promise<void> => {
     tasks.push(test_source(sources[source]));
   }
   await Promise.all(tasks);
-  console.log("TESTS COMPLETED!");
+  console.log("TESTS COMPLETED SUCCESSFULLY!");
 };
 
-// (async () => await test_source(sources.kissaway))();
+// (async () => await test_source(sources.manga1001))();
 
 // (async () => tester())();
+
 const renderer_test = new non_renderer()
 
 export default defineComponent({

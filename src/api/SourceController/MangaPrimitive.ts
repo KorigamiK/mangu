@@ -31,6 +31,8 @@ export type Isearch_results = Array<search_result>
 export interface Ichapter {
     url: string,
     title: string,
+    previous?: string,
+    next?: string
 }
 
 export interface Imanga_source extends manga_primitive{

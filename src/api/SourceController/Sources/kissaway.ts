@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Imanga_source, manga_primitive, Isearch_results, search_result, Ichapter } from '../MangaPrimitive'
 
 interface kissaway_search {
@@ -30,7 +31,7 @@ export default class kissaway extends manga_primitive implements Imanga_source {
         return return_results
     }
 
-    async get_chapters(url: string) {
+    async get_chapters(url: string): Promise<Array<Ichapter>> {
         const page = await this.get(url)
         const dom = await this.fetch_html(await page.text())
         const chapters = []
@@ -40,10 +41,9 @@ export default class kissaway extends manga_primitive implements Imanga_source {
         return chapters as Ichapter[]
     }
 
-    async get_images(chapter_url: string) {
+    async get_images(chapter_url: string): Promise<Array<string>> {
         const page = await this.get(chapter_url)
         const dom = await this.fetch_html(await page.text())
-        const raw_imgs = [] as string[]
         const tasks = []
         for (const i of dom.querySelectorAll('img.chapter-img')){
             tasks.push(this.non_renderer_get_encoded_response(i.getAttribute('data-aload')!, { headers: { 'referer': 'https://kissaway.net/' } }))

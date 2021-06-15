@@ -73,6 +73,7 @@ export default defineComponent({
       try{
         results = await sources[this.selected_source].search(this.search_query);
       }catch(e){
+        console.log(e)
         console.log('something went wrong while getting results')
         results = null
       }

@@ -10,7 +10,6 @@
 import { defineComponent } from "vue";
 // import Test from "./components/TestingComponent.vue";
 import { hello } from "./api/test";
-// test_func()
 console.log(hello.thing);
 export default defineComponent({
   name: "App",
