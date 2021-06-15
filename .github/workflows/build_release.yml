@@ -1,3 +1,4 @@
+
 name: Release/Linux
 
 on: push
@@ -19,26 +20,22 @@ jobs:
         run: |
           npm i
           npm run electron:build        
-
       - name: Created files
         run: ls -l ./dist_electron
 
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            "dist_electron/*.deb"
-            "LICENSE"
-            "*.md"
-            "dist_electron/*.AppImage"
-          tag_name: automated_release
-          draft: false
-          prerelease: false
-          body: |
-            Nightly release
+      - name: Upload release
+        uses: xresloader/upload-to-github-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        with:
+          file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
+          tag_name: automated_release
+          tags: false
+          overwrite: true
+          verbose: true
+          update_latest_release: true
+          draft: false
+          prerelease: false
 
   windows_release:
     runs-on: ${{ matrix.os }}
@@ -62,22 +59,19 @@ jobs:
         run: |
           npm i
           npm run electron:build        
-
       - name: Created files
         run: dir ./dist_electron
 
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            "dist_electron/*.exe"
-            "LICENSE"
-            "*.md"
-          tag_name: automated_release
-          draft: false
-          prerelease: false
-          body: |
-            Nightly release
+      - name: Upload release
+        uses: xresloader/upload-to-github-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        with:
+          file: "*.md;dist_electron/*.exe;LICENSE"
+          tag_name: automated_release
+          tags: false
+          overwrite: true
+          verbose: true
+          update_latest_release: true
+          draft: false
+          prerelease: false
