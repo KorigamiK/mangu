@@ -23,19 +23,23 @@ jobs:
       - name: Created files
         run: ls -l ./dist_electron
 
-      - name: Upload release
-        uses: xresloader/upload-to-github-release@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
+          files: |
+            "dist_electron/*.deb"
+            "LICENSE"
+            "*.md"
+            "dist_electron/*.AppImage"
+          asset: patch
           tag_name: continuous_release
-          tags: false
-          overwrite: true
-          verbose: true
-          update_latest_release: true
           draft: false
           prerelease: false
+          body: |
+            Nightly release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
   windows_release:
     runs-on: ${{ matrix.os }}
@@ -63,16 +67,19 @@ jobs:
       - name: Created files
         run: dir ./dist_electron
 
-      - name: Upload release
-        uses: xresloader/upload-to-github-release@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          file: "*.md;dist_electron/*.exe;LICENSE"
+          files: |
+            "dist_electron/*.exe"
+            "LICENSE"
+            "*.md"
+          asset: patch
           tag_name: continuous_release
-          tags: false
-          overwrite: true
-          verbose: true
-          update_latest_release: true
           draft: false
           prerelease: false
+          body: |
+            Nightly release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
