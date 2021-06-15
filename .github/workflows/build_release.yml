@@ -31,8 +31,7 @@ jobs:
             "LICENSE"
             "*.md"
             "dist_electron/*.AppImage"
-          asset: patch
-          tag_name: continuous_release
+          tag_name: automated_release
           draft: false
           prerelease: false
           body: |
@@ -74,8 +73,7 @@ jobs:
             "dist_electron/*.exe"
             "LICENSE"
             "*.md"
-          asset: patch
-          tag_name: continuous_release
+          tag_name: automated_release
           draft: false
           prerelease: false
           body: |
