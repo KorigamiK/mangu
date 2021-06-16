@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Imanga_source, manga_primitive, Isearch_results, Ichapter, search_result } from '../MangaPrimitive'
+import { Imanga_source, manga_primitive, Isearch_results, Ichapter, search_result, Iimages } from '../MangaPrimitive'
 
 export default class mangathousand extends manga_primitive implements Imanga_source {
     SEARCH_API: URL
@@ -41,7 +41,7 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
         return chapters
     }
 
-    get_images = async (url: string): Promise<Array<string>> => {
+    get_images = async (url: string): Promise<Iimages> => {
         const html = await this.get(url, {})
         const dom = await this.fetch_html(await html.text())
         const imgs: string[] = []
@@ -49,11 +49,17 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
             imgs.push(i.getAttribute('data-src') ? i.getAttribute('data-src')! : i.getAttribute('src')!)
         }
         const tasks = []
-        if (imgs[0].includes('vuc19.club')) {
+        if (imgs[0].includes('.club')) {
             for (const img of imgs) {
                 tasks.push(this.non_renderer_get_encoded_response(img, { headers: { 'referer': 'https://manga1001.com/' }}))
             }
         }
-        return tasks.length !== 0 ? await Promise.all(tasks) : imgs
+
+        const ret = {} as Iimages
+        ret.title = dom.querySelector('h1.entry-title')!.textContent!
+        ret.previous_chapter = dom.querySelector('div.linkchap a > i.fa-angle-left')?.parentElement?.getAttribute('href')
+        ret.next_chapter = dom.querySelector('div.linkchap a > i.fa-angle-right')?.parentElement?.getAttribute('href')
+        ret.images = tasks.length !== 0 ? await Promise.all(tasks) : imgs
+        return ret
     }
 }

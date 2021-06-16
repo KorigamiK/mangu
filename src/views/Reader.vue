@@ -1,5 +1,5 @@
 <template>
-  <Search @load-chapter="push_new_component" />
+  <Search @load-chapter="push_new_component" :sources="sources"/>
   <br />
   <button class="viewer-button" @click="side_by_side = !side_by_side">
     Change Viewer
@@ -15,7 +15,18 @@
       <button @click="component.offset += 1">Offset +</button>
       <button @click="component.offset -= 1">Offset -</button>
 
-      <SourceReader :pages="component.imgs" :msg="component.chapter_title" :offset="component.offset" />
+      <SourceReader 
+      :component_key="component_key"
+      :source_identifier="component.source_identifier"
+      :pages="component.imgs.images" 
+      :msg="component.chapter_title" 
+      :offset="component.offset" 
+      :previous_chapter="component.imgs.previous_chapter" 
+      :next_chapter="component.imgs.next_chapter"
+      @load-next-chapter="load_next_prev_chapter"
+      @load-previous-chapter="load_next_prev_chapter"
+      />
+
     </div>
   </div>
   <div v-else>
@@ -26,6 +37,8 @@
       @offset-plus="offset_plus"
       @offset-minus="offset_minus"
       @remove-component="remove_component"
+      @load-next-chapter="load_next_prev_chapter"
+      @load-previous-chapter="load_next_prev_chapter"
     />
   </div>
 </template>
@@ -35,12 +48,15 @@ import { defineComponent } from "vue";
 import SourceReader from "@/components/SourceReader.vue";
 import Search from "@/components/Search.vue";
 import CoolReader from "@/components/CoolReader.vue";
+import { Iimages } from "@/api/SourceController/MangaPrimitive";
+import { sources } from "../api/SourceController/Controller";
 
 interface Ireader_component {
-  imgs: string[];
+  imgs: Iimages;
   offset: number;
   index: number;
   chapter_title: string;
+  source_identifier: string
 }
 
 interface Ireader_conponents {
@@ -70,13 +86,14 @@ export default defineComponent({
       }
     },
 
-    push_new_component(chapter_images: string[], chapter_title: string) {
+    push_new_component(chapter_images: Iimages, chapter_title: string, source_identifier: string) {
       this.index += 1;
       this.reader_components[this.index] = {
         imgs: chapter_images,
         offset: 0,
         index: this.index,
         chapter_title: chapter_title,
+        source_identifier: source_identifier
       };
       console.log(
         "Number of elements updated to: ",
@@ -109,6 +126,15 @@ export default defineComponent({
     offset_minus(key: number) {
       this.reader_components[key].offset -= 1;
     },
+    async load_next_prev_chapter(link: string, component_key: number, source_identifier: string) {
+      const imgs = await this.sources[source_identifier].get_images(link)
+      this.reader_components[component_key].imgs = imgs
+      if (imgs.title) {
+        this.reader_components[component_key].chapter_title = imgs.title
+      } else {
+        console.log('Cannot update chapter title')
+      }
+    },
   },
 
   data() {
@@ -122,6 +148,7 @@ export default defineComponent({
       counter: 50,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       change_order_keyboard_listener: function(e: KeyboardEvent) {return},
+      sources: sources
     };
   },
 });

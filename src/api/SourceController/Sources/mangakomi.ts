@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Imanga_source, manga_primitive, Isearch_results, Ichapter } from '../MangaPrimitive'
+import { Imanga_source, manga_primitive, Isearch_results, Ichapter, Iimages } from '../MangaPrimitive'
 
 export default class mangakomi extends manga_primitive implements Imanga_source {
     public constructor() {
@@ -30,7 +30,7 @@ export default class mangakomi extends manga_primitive implements Imanga_source 
         return chapters
     }
 
-    get_images = async (url: string): Promise<Array<string>> => {
+    get_images = async (url: string): Promise<Iimages> => {
         const body = await (await this.get(url)).text()
         const dom = await this.fetch_html(body)
         const imgs: Array<string> = []
@@ -38,6 +38,11 @@ export default class mangakomi extends manga_primitive implements Imanga_source 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             imgs.push((ele as any).dataset.src.trim())
         })
-        return imgs
+        const ret = {} as Iimages
+        ret.images = imgs
+        ret.previous_chapter = dom.querySelector('a.prev_page')?.getAttribute('href')
+        ret.next_chapter = dom.querySelector('a.next_page')?.getAttribute('href')
+        ret.title = dom.querySelector('h1#chapter-heading')?.textContent
+        return ret
     }
 }

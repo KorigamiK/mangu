@@ -1,6 +1,19 @@
 <template>
   <div class="change-button" v-if="Object.keys(reader_components).length !== 0">
     <div class="active-text">Currently active: {{ Object.keys(reader_components)[Object.keys(reader_components).length -1] }}</div>
+    <div>
+      <button 
+      v-if="reader_components[get_active_component_key()].imgs.previous_chapter"
+      @click="$emit('load-previous-chapter', reader_components[get_active_component_key()].imgs.previous_chapter, get_active_component_key(), reader_components[get_active_component_key()].source_identifier)"
+      >Previous</button>
+
+      <button 
+      v-if="reader_components[get_active_component_key()].imgs.next_chapter"
+      @click="$emit('load-next-chapter', reader_components[get_active_component_key()].imgs.next_chapter, get_active_component_key(), reader_components[get_active_component_key()].source_identifier)"
+      >Next</button>
+
+    </div>
+
     <button @click="$emit('change-order')">Change Order ']'</button>
     <div>
       <button
@@ -38,13 +51,15 @@
 </template>
 
 <script lang="ts">
+import { Iimages } from "@/api/SourceController/MangaPrimitive";
 import { defineComponent, PropType } from "vue";
 
 interface Ireader_component {
-  imgs: string[];
+  imgs: Iimages;
   offset: number;
   index: number;
   chapter_title: string;
+  source_identifier: string
 }
 
 interface Ireader_conponents {
@@ -56,7 +71,7 @@ export default defineComponent({
     return {  };
   },
 
-  emits: ["change-order", "offset-plus", "offset-minus", "remove-component"],
+  emits: ["change-order", "offset-plus", "offset-minus", "remove-component", 'load-next-chapter', 'load-previous-chapter'],
 
   props: {
     reader_components: {
@@ -66,6 +81,14 @@ export default defineComponent({
     change_order_keyboard_listener: {
       type: Function as PropType<(event: KeyboardEvent) => void>,
       required: true
+    },
+    next_chapter: {
+      type: String,
+      default: '',
+    },
+    previous_chapter: {
+      type: String,
+      default: '',
     }
   },
 
@@ -93,7 +116,7 @@ export default defineComponent({
       for (let i in this.reader_components) {
         images_array.push(
           get_imgs_with_offset(
-            this.reader_components[i].imgs,
+            this.reader_components[i].imgs.images,
             this.reader_components[i].offset
           )
         );
@@ -116,7 +139,9 @@ export default defineComponent({
         console.log('listener removed')
       }
     },
-
+    get_active_component_key() {
+      return Object.keys(this.reader_components)[Object.keys(this.reader_components).length -1]
+    }
   },
 });
 </script>

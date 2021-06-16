@@ -33,7 +33,6 @@ jobs:
           tags: false
           overwrite: true
           verbose: true
-          update_latest_release: true
           draft: false
           prerelease: false
 
@@ -72,6 +71,5 @@ jobs:
           tags: false
           overwrite: true
           verbose: true
-          update_latest_release: true
           draft: false
           prerelease: false

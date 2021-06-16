@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Imanga_source, manga_primitive, Isearch_results, Ichapter } from '../MangaPrimitive'
+import { Imanga_source, manga_primitive, Isearch_results, Ichapter, Iimages } from '../MangaPrimitive'
 
 export default class rawmanga extends manga_primitive implements Imanga_source {
     public constructor() {
@@ -34,13 +34,21 @@ export default class rawmanga extends manga_primitive implements Imanga_source {
         return chapters
     }
 
-    get_images = async (url: string): Promise<Array<string>> => {
+    get_images = async (url: string): Promise<Iimages> => {
         const body = await (await this.get(url)).text()
         const dom = await this.fetch_html(body)
         let imgs: Array<string> = []
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dom.querySelector("select.custom-select.page-list")?.childNodes.forEach((ele) => (ele as any).value ? imgs.push((ele as any)['value']) : {})
         imgs = imgs.map((ele) => `${this.WEBSITE_HOME}viewer/${url.replace(this.WEBSITE_HOME.toString(), '')}/${ele}`)
-        return imgs
+        const ret = {} as Iimages
+        ret.images = imgs 
+        ret.title = dom.querySelector('main > div ul > li:last-child')?.textContent
+        ret.previous_chapter = dom.querySelector('select.chapter-list [selected]')?.nextElementSibling?.getAttribute('value')
+        if (ret.previous_chapter) ret.previous_chapter = url.split('/').slice(0, -1).join('/') + '/' +ret.previous_chapter
+        ret.next_chapter = dom.querySelector('select.chapter-list [selected]')?.previousElementSibling?.getAttribute('value')
+        if (ret.next_chapter) ret.next_chapter = url.split('/').slice(0, -1).join('/') + '/' +ret.next_chapter
+
+        return ret
     }
 }

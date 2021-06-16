@@ -47,21 +47,26 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent } from "vue";
-import { sources } from "../api/SourceController/Controller";
+import { defineComponent, PropType } from "vue";
+import { Isources } from "../api/SourceController/Controller";
 import { search_result, Isearch_results, Ichapter } from "../api/SourceController/MangaPrimitive";
 
 export default defineComponent({
   name: "Search",
   emits: ['load-chapter'],
+  props: {
+    sources: {
+      type: Object as PropType<Isources>,
+      required: true
+    }
+  },
   data() {
     return {
       search_query: "",
       selected_source: "",
-      sources: sources,
       show_results: false,
       show_form: true,
-      search_results: [{}] as Isearch_results,
+      search_results: [] as Isearch_results,
       show_chapters: false,
       chapters: [{}] as Ichapter[]
     };
@@ -71,7 +76,7 @@ export default defineComponent({
       console.log(this.search_query, this.selected_source);
       let results: Isearch_results | null
       try{
-        results = await sources[this.selected_source].search(this.search_query);
+        results = await this.sources[this.selected_source].search(this.search_query);
       }catch(e){
         console.log(e)
         console.log('something went wrong while getting results')
@@ -84,14 +89,14 @@ export default defineComponent({
 
     async select_result(result: search_result, source_identifier: string) {
       console.log(source_identifier);
-      this.chapters = await sources[source_identifier].get_chapters(result.url)
+      this.chapters = await this.sources[source_identifier].get_chapters(result.url)
       this.show_results = false;
       this.show_chapters = true
     },
 
     async select_chapter(chapter: Ichapter, source_identifier: string) {
-      const chapter_images = await sources[source_identifier].get_images(chapter.url)
-      this.$emit('load-chapter', chapter_images, source_identifier + ' - ' + chapter.title)
+      const chapter_images = await this.sources[source_identifier].get_images(chapter.url)
+      this.$emit('load-chapter', chapter_images, source_identifier + ' - ' + chapter.title, source_identifier)
       this.show_chapters = false
     }
   },

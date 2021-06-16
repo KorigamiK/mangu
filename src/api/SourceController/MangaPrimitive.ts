@@ -35,8 +35,15 @@ export interface Ichapter {
     next?: string
 }
 
+export interface Iimages {
+    images: string[],
+    title?: string | null
+    next_chapter?: string | null,
+    previous_chapter?: string | null
+}
+
 export interface Imanga_source extends manga_primitive{
     search: (query: string) => Promise<Isearch_results | null>,
     get_chapters : (slugorurl: string) => Promise<Array<Ichapter>>,
-    get_images: (url: string) => Promise<Array<string>>
+    get_images: (url: string) => Promise<Iimages>
 }

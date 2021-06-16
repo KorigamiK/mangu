@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Imanga_source, manga_primitive, Isearch_results, search_result, Ichapter } from '../MangaPrimitive'
+import { Imanga_source, manga_primitive, Isearch_results, search_result, Ichapter, Iimages } from '../MangaPrimitive'
 
 interface kissaway_search {
     image: string,
@@ -41,13 +41,20 @@ export default class kissaway extends manga_primitive implements Imanga_source {
         return chapters as Ichapter[]
     }
 
-    async get_images(chapter_url: string): Promise<Array<string>> {
+    async get_images(chapter_url: string): Promise<Iimages> {
         const page = await this.get(chapter_url)
         const dom = await this.fetch_html(await page.text())
         const tasks = []
         for (const i of dom.querySelectorAll('img.chapter-img')){
             tasks.push(this.non_renderer_get_encoded_response(i.getAttribute('data-aload')!, { headers: { 'referer': 'https://kissaway.net/' } }))
           }
-        return await Promise.all(tasks)
+        const ret = {} as Iimages
+        ret.images = await Promise.all(tasks)
+        ret.previous_chapter = dom.querySelector('.form-control [selected]')?.nextElementSibling?.getAttribute('value')
+        if (ret.previous_chapter) ret.previous_chapter = this.WEBSITE_HOME + '/' + ret.previous_chapter
+        ret.next_chapter = dom.querySelector('.form-control [selected]')?.previousElementSibling?.getAttribute('value')
+        if (ret.next_chapter) ret.next_chapter = this.WEBSITE_HOME + '/' + ret.next_chapter
+        ret.title = dom.querySelector('h3')?.textContent
+        return ret
     }
 }

@@ -1,4 +1,4 @@
-import { Imanga_source, manga_primitive, Isearch_results, Ichapter } from '../MangaPrimitive'
+import { Imanga_source, manga_primitive, Isearch_results, Ichapter, Iimages } from '../MangaPrimitive'
 
 export default class mangathousand extends manga_primitive implements Imanga_source {
     public constructor() {
@@ -16,8 +16,8 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
         return [] as Ichapter[]
     }
 
-    get_images = async (url: string): Promise<Array<string>> => {
+    get_images = async (url: string): Promise<Iimages> => {
         console.log(url)
-        return [] as string[]
+        return {} as Iimages
     }
 }
