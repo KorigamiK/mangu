@@ -31,7 +31,6 @@ jobs:
           file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
           tag_name: automated_release
           tags: false
-          overwrite: true
           verbose: true
           draft: false
           prerelease: false
@@ -69,7 +68,6 @@ jobs:
           file: "*.md;dist_electron/*.exe;LICENSE"
           tag_name: automated_release
           tags: false
-          overwrite: true
           verbose: true
           draft: false
           prerelease: false
