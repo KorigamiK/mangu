@@ -43,7 +43,7 @@ export interface Iimages {
 }
 
 export interface Imanga_source extends manga_primitive{
-    search: (query: string) => Promise<Isearch_results | null>,
-    get_chapters : (slugorurl: string) => Promise<Array<Ichapter>>,
-    get_images: (url: string) => Promise<Iimages>
+    search(query: string): Promise<Isearch_results | null>,
+    get_chapters(slugorurl: string): Promise<Array<Ichapter>>,
+    get_images(url: string): Promise<Iimages>
 }

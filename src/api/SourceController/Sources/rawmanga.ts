@@ -7,7 +7,7 @@ export default class rawmanga extends manga_primitive implements Imanga_source {
         this.header_options = { mode: 'no-cors' }
     }
 
-    search = async (query: string): Promise<Isearch_results | null> => {
+    async search(query: string): Promise<Isearch_results | null> {
         const params = new URLSearchParams()
         params.append('q', query)
         const resp = await this.get('https://rawmanga.top/ajax/search?' + params, {
@@ -25,7 +25,7 @@ export default class rawmanga extends manga_primitive implements Imanga_source {
         }
     }
 
-    get_chapters = async (urlOrSlug: string): Promise<Array<Ichapter>> => {
+    async get_chapters(urlOrSlug: string): Promise<Array<Ichapter>> {
         urlOrSlug = urlOrSlug.includes('rawmanga') ? urlOrSlug : this.WEBSITE_HOME + urlOrSlug
         const html = await this.get(urlOrSlug)
         const dom = await this.fetch_html(await html.text())
@@ -34,7 +34,7 @@ export default class rawmanga extends manga_primitive implements Imanga_source {
         return chapters
     }
 
-    get_images = async (url: string): Promise<Iimages> => {
+    async get_images(url: string): Promise<Iimages> {
         const body = await (await this.get(url)).text()
         const dom = await this.fetch_html(body)
         let imgs: Array<string> = []
