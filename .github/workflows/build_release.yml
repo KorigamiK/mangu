@@ -4,10 +4,15 @@ name: Release/Linux
 on: push
 
 jobs:
-  linux_release:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
 
       - name: "Install Node.js, NPM and Yarn"
         uses: actions/setup-node@v1
@@ -20,54 +25,30 @@ jobs:
         run: |
           npm i
           npm run electron:build        
+
       - name: Created files
         run: ls -l ./dist_electron
 
-      - name: Upload release
-        uses: xresloader/upload-to-github-release@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          file: "*.md;dist_electron/*.deb;dist_electron/*.AppImage;LICENSE"
-          tag_name: automated_release
-          tags: false
-          verbose: true
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ```auomatic release```
           draft: false
           prerelease: false
-
-  windows_release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [windows-latest]
-
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-
-      - name: "Install Node.js, NPM and Yarn"
-        uses: actions/setup-node@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          node-version: 14
-
-      - name: Install dependencies & Build release
-        run: |
-          npm i
-          npm run electron:build        
-      - name: Created files
-        run: dir ./dist_electron
 
       - name: Upload release
         uses: xresloader/upload-to-github-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "*.md;dist_electron/*.exe;LICENSE"
+          release_id: ${{ steps.create_release.outputs.id }}
+          file: "*.md;dist_electron/*.exe;LICENSE;dist_electron/*.deb;dist_electron/*.AppImage"
           tag_name: automated_release
-          tags: false
+          overwrite: true
           verbose: true
-          draft: false
-          prerelease: false

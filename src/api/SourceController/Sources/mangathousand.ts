@@ -10,7 +10,7 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
         this.SEARCH_API = this.WEBSITE_HOME
     }
 
-    search = async (query: string): Promise<Isearch_results | null> => {
+    async search(query: string): Promise<Isearch_results | null> {
         this.SEARCH_API.searchParams.set('s', query)
 
         const html = await this.get(this.SEARCH_API.toString(), {})
@@ -28,7 +28,7 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
         return results
     }
 
-    get_chapters = async (urlOrSlug: string): Promise<Array<Ichapter>> => {
+    async get_chapters(urlOrSlug: string): Promise<Array<Ichapter>> {
         const html = await this.get(urlOrSlug, {})
         const dom = await this.fetch_html(await html.text())
         const chapters = []
@@ -41,7 +41,7 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
         return chapters
     }
 
-    get_images = async (url: string): Promise<Iimages> => {
+    async get_images(url: string): Promise<Iimages> {
         const html = await this.get(url, {})
         const dom = await this.fetch_html(await html.text())
         const imgs: string[] = []

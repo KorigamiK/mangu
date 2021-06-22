@@ -7,7 +7,7 @@ export default class mangakomi extends manga_primitive implements Imanga_source 
         this.header_options = { mode: 'no-cors' }
     }
 
-    search = async (query: string): Promise<Isearch_results | null> => {
+    async search(query: string): Promise<Isearch_results | null> {
         const params = new URLSearchParams()
         params.append('action', 'wp-manga-search-manga')
         params.append('title', query)
@@ -22,7 +22,7 @@ export default class mangakomi extends manga_primitive implements Imanga_source 
         }
     }
 
-    get_chapters = async (url: string): Promise<Array<Ichapter>> => {
+    async get_chapters(url: string): Promise<Array<Ichapter>> {
         const html = await this.get(url)
         const dom = await this.fetch_html(await html.text())
         const chapters = [] as Ichapter[]
@@ -30,7 +30,7 @@ export default class mangakomi extends manga_primitive implements Imanga_source 
         return chapters
     }
 
-    get_images = async (url: string): Promise<Iimages> => {
+    async get_images(url: string): Promise<Iimages> {
         const body = await (await this.get(url)).text()
         const dom = await this.fetch_html(body)
         const imgs: Array<string> = []
