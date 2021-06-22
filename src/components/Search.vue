@@ -10,6 +10,7 @@
 
     <label>Role:</label>
     <select class="form-control" name="template" v-model="selected_source" required>
+      <option value="ALL_SOURCES">All Sources</option>
       <option
         v-for="source in sources"
         v-bind:value="source.IDENTIFIER"
@@ -29,10 +30,24 @@
   <p class="pill">source: {{ selected_source }}</p>
   <div class="results" v-if="show_results">
     Here are the results
+    <div v-if="selected_source == 'ALL_SOURCES'" class="results-flex-container">
+      <div class="results-flex-child" v-for="results in all_results" :key="results">
+        <p>{{results.source_title}}</p>
+        <p class="pill" 
+        v-for="result in results.result" 
+        :key="result" 
+        @click="selected_source = results.identifier; select_result(result, results.identifier)"
+        >
+        {{ result.title }}
+        </p>
+      </div>
+    </div>
+
     <div
       class="results-container"
       v-for="result in search_results"
       :key="result.title"
+      v-else
     >
       <p class="pill" @click="select_result(result, selected_source)">{{ result.title }}</p>
       <br />
@@ -51,6 +66,12 @@ import { defineComponent, PropType } from "vue";
 import { Isources } from "../api/SourceController/Controller";
 import { search_result, Isearch_results, Ichapter } from "../api/SourceController/MangaPrimitive";
 
+interface Iall_results {
+  source_title: string,
+  result: Isearch_results | null,
+  identifier: string
+}
+
 export default defineComponent({
   name: "Search",
   emits: ['load-chapter'],
@@ -68,21 +89,27 @@ export default defineComponent({
       show_form: true,
       search_results: [] as Isearch_results,
       show_chapters: false,
-      chapters: [{}] as Ichapter[]
+      chapters: [{}] as Ichapter[],
+      all_results: [{}] as Iall_results[]
     };
   },
+
   methods: {
     async handel_search() {
       console.log(this.search_query, this.selected_source);
-      let results: Isearch_results | null
-      try{
-        results = await this.sources[this.selected_source].search(this.search_query);
-      }catch(e){
-        console.log(e)
-        console.log('something went wrong while getting results')
-        results = null
+      if (this.selected_source !== 'ALL_SOURCES') {
+        let results: Isearch_results | null
+        try{
+          results = await this.sources[this.selected_source].search(this.search_query);
+        }catch(e){
+          console.log(e)
+          console.log('something went wrong while getting results')
+          results = null
+        }
+        this.search_results = results ? results : [{ title: "", url: "" }];
+      }else {
+        this.all_results = await this.search_all_sources()
       }
-      this.search_results = results ? results : [{ title: "", url: "" }];
       this.show_results = true;
       this.show_form = false;
     },
@@ -98,12 +125,49 @@ export default defineComponent({
       const chapter_images = await this.sources[source_identifier].get_images(chapter.url)
       this.$emit('load-chapter', chapter_images, source_identifier + ' - ' + chapter.title, source_identifier)
       this.show_chapters = false
+    },
+
+    async search_all_sources(): Promise<Iall_results[]> {
+      const tasks = []
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let results: any[] = []
+      try {
+        for(const source in this.sources) {
+          tasks.push(this.sources[source].search(this.search_query))
+        }
+        results = await Promise.all(tasks)
+      }catch(e){
+        console.log(e)
+        console.log('something went wrong while getting results')
+      }
+
+      const ret = []
+      let x = 0
+      for (const i in this.sources) {
+        ret.push({
+          source_title: this.sources[i].TITLE,
+          identifier: this.sources[i].IDENTIFIER,
+          result: results[x] ? results[x] : null
+        })
+        x++
+      }
+      console.log(ret)
+      return ret 
     }
   },
 });
 </script>
 
 <style scoped>
+.results-flex-container {
+  display: flex;
+}
+
+.results-flex-child {
+  flex: 1;
+  border: 2px solid rgb(53, 53, 53);
+}
+
 form {
   max-width: 420px;
   margin: 30px auto;
