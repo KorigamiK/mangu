@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!show_form"><button @click="show_form = true; show_chapters=false">Add source</button></div>
+  <div v-if="!show_form"><button @click="show_form = true; show_results = true; show_chapters=false">Add source</button></div>
   <div v-if="show_chapters"><button @click="show_chapters=false">Hide Chapters</button></div>
   <div v-if="chapters !== [{}] && !show_chapters"><button @click="show_chapters=true">Show Chapters</button></div>
 
