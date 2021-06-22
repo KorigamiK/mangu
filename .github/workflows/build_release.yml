@@ -1,5 +1,5 @@
 
-name: Release/Linux
+name: Release/Linux, Windows
 
 on: push
 
