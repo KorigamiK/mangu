@@ -18,8 +18,8 @@ export class request_client {
         return new DOMParser().parseFromString(body, mime)
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async eval_js(url: string, js_code: string): Promise<any> {
-        return await this.ipcRenderer.invoke('execute_js_sync', url, js_code)
+    async eval_js(url: string, js_code: string, wait_for=1000): Promise<any> {
+        return await this.ipcRenderer.invoke('execute_js_sync', url, js_code, wait_for)
     }
 
     async non_renderer_get_encoded_response(url: string, options: RequestInit): Promise<string> {

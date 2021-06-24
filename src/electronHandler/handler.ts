@@ -6,13 +6,20 @@ import { non_renderer_requests_client } from './nonRendererRequestsClient'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 console.log(`Starting in development = ${isDevelopment}`)
+
+const delay = function(time: number) {
+    return new Promise(function(resolve) { 
+        setTimeout(resolve, time);
+    });
+}
+
 export default class Main {
     static mainWindow: Electron.BrowserWindow | null
     static application: Electron.App
     static browser_window = BrowserWindow
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private static async get_page(url: string, script: string): Promise<any> {
+    private static async get_page(url: string, script: string, wait_for=1): Promise<any> {
         let new_window: null | BrowserWindow = new BrowserWindow({
             height: 600, width: 800,
             minHeight: 600, minWidth: 800,
@@ -31,6 +38,7 @@ export default class Main {
         // new_window.show()
         try {
             await new_window.loadURL(url)
+            await delay(wait_for)
             ret = await new_window.webContents.executeJavaScript(script, true)
         } catch (err) {
             ret = err
@@ -69,7 +77,7 @@ export default class Main {
         //   }
         Main.mainWindow = new Main.browser_window({
             width: 800, height: 600, webPreferences: {
-                backgroundColor: '#FFF',
+                // backgroundColor: '#FFF',
                 nodeIntegration: true,
                 contextIsolation: false,
                 enableRemoteModule: true,
@@ -108,9 +116,9 @@ export default class Main {
             { scheme: 'app', privileges: { secure: true, standard: true } }
         ])
         console.log(app.getAppPath())
-        ipcMain.handle('execute_js_sync', async (event, url: string, script: string) => {
+        ipcMain.handle('execute_js_sync', async (event, url: string, script: string, wait_for=1) => {
             console.log(script)
-            return await Main.get_page(url, script)
+            return await Main.get_page(url, script, wait_for)
         })
         Main.application.on('window-all-closed', Main.on_all_window_closed)
         Main.application.on('ready', Main.on_ready)

@@ -3,9 +3,16 @@ import { defineComponent } from "vue";
 import { sources, Isources } from "../api/SourceController/Controller";
 import { Imanga_source } from "../api/SourceController/MangaPrimitive";
 import { non_renderer } from "../api/SourceController/NonRenderer/Test";
+// import { request_client } from '../api/RequestClient'
 
 console.log("Testing component loaded");
 sources as Isources;
+// const client = new request_client();
+
+console.log('hihihi');
+// (async () => {let ret = await client.eval_js('https://otakuscan.net/chapter/125744/kanojo_okarishimasu-chap-187',
+// "let x = []; for (i of document.querySelectorAll('img.canv.nor-pic:not(.loaded)')) {x.push(i.src)}; x", 3000)
+// console.log(ret, 113)})()
 
 async function test_source(src: Imanga_source) {
   console.log(src.TITLE);
@@ -18,7 +25,8 @@ async function test_source(src: Imanga_source) {
   const selected_result = search_results[0];
   const chapters = await src.get_chapters(selected_result.url);
   const imgs = await src.get_images(chapters[0].url);
-  console.log(imgs)
+  // const imgs = await src.get_images('https://otakuscan.net/chapter/129287/iji_ranaide_nagatoro_san-chap-84');
+  // console.log(imgs, 1)
   console.log(selected_result.title, "Is selected");
   console.log(search_results);
   console.log(`Only ${chapters.length} chapters found`);
@@ -35,7 +43,7 @@ const tester = async (): Promise<void> => {
   console.log("TESTS COMPLETED SUCCESSFULLY!");
 };
 
-// (async () => await test_source(sources.manga1001))();
+// (async () => await test_source(sources.otakuscan))();
 
 // (async () => tester())();
 
