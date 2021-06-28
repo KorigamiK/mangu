@@ -5,7 +5,6 @@ import { sources, Isources } from "../api/SourceController/Controller";
 import { Imanga_source } from "../api/SourceController/MangaPrimitive";
 import { non_renderer } from "../api/SourceController/NonRenderer/Test";
 // import { request_client } from '../api/RequestClient'
-import file_system from '../api/filesystem';
 
 console.log("Testing component loaded");
 sources as Isources;
@@ -32,7 +31,7 @@ async function test_source(src: Imanga_source) {
   console.log(selected_result.title, "Is selected");
   console.log(search_results);
   console.log(`Only ${chapters.length} chapters found`);
-  console.log(imgs);
+  console.log(JSON.stringify(imgs.images));
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -45,16 +44,16 @@ const tester = async (): Promise<void> => {
   console.log("TESTS COMPLETED SUCCESSFULLY!");
 };
 
-// (async () => await test_source(sources.offlinemanga))();
+// (async () => await test_source(sources.mangakomi))();
+
+const download_test = async () => {
+  const imgs = ["https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/20.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/21.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/22.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/23.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/24.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/25.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/26.jpg"]
+  await sources.mangakomi.download(imgs, 'gin no', '1')
+}
 
 // (async () => tester())();
 
 const renderer_test = new non_renderer();
-
-
-// (async () => {
-//   console.log(await file_system.folders(), await file_system.config())
-//   })()
 
 export default defineComponent({
   name: "Test",

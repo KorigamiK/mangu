@@ -90,6 +90,8 @@ export default class Main {
         })
 
         ipcMain.handle('get_config', () => { return config })
+
+        ipcMain.handle('download_file', async (event, url, download_location, headers={}) => await non_renderer_requests_client.download(url, download_location, headers))
     }
 
     private static async on_ready() {

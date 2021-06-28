@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Imanga_source, manga_primitive, Isearch_results, Ichapter, Iimages } from '../MangaPrimitive'
-import file_system from '@/api/filesystem'
+import file_system from '@/api/Filesystem'
 import fs from 'fs'
 import { dirname, join } from 'path'
 import fileUrl from 'file-url'

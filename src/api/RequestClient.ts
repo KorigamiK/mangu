@@ -1,7 +1,7 @@
 export class request_client {
     header_options: RequestInit = {}
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private ipcRenderer = (window as any).ipcRenderer as Electron.IpcRenderer
+    public ipcRenderer = (window as any).ipcRenderer as Electron.IpcRenderer
 
     get (url: RequestInfo, options: RequestInit={}): Promise<Response> {
         options.method = 'get'

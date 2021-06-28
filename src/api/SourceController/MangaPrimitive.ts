@@ -1,3 +1,5 @@
+import { join } from 'path'
+import file_system from '../Filesystem'
 import { request_client } from '../RequestClient'
 interface Iconfig_primitive {
     manga_directory: string | null
@@ -8,6 +10,15 @@ export abstract class manga_primitive extends request_client{
     public readonly IDENTIFIER: string
     public readonly TITLE: string
     public CONFIG: Iconfig_primitive
+    public async download(urls: string[], manga: string, chapter: string, headers={}): Promise<string> {
+        const tasks = []
+        const config = await file_system.config()
+        for (const [index, url] of urls.entries()) {
+            tasks.push(this.ipcRenderer.invoke('download_file', url, join(config.manga_directory, manga, chapter, index.toString()), headers))
+          }
+        await Promise.all(tasks)
+        return join((await file_system.config()).manga_directory, manga, chapter)
+    }
     public constructor(website_home: string, identifier: string, title: string, header_options?: RequestInit) {
         super()
         this.WEBSITE_HOME = new URL(website_home)

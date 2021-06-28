@@ -27,11 +27,13 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "file-url": "^4.0.0",
+    "mime-types": "^2.1.31",
     "node-fetch": "^2.6.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
+    "@types/mime-types": "^2.1.0",
     "@types/node-fetch": "^2.5.10",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",

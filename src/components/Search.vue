@@ -90,7 +90,8 @@ export default defineComponent({
       search_results: [] as Isearch_results,
       show_chapters: false,
       chapters: [{}] as Ichapter[],
-      all_results: [{}] as Iall_results[]
+      all_results: [{}] as Iall_results[],
+      manga_name: ''
     };
   },
 
@@ -116,6 +117,7 @@ export default defineComponent({
 
     async select_result(result: search_result, source_identifier: string) {
       console.log(source_identifier);
+      this.manga_name = result.title
       this.chapters = await this.sources[source_identifier].get_chapters(result.url)
       this.show_results = false;
       this.show_chapters = true
@@ -123,7 +125,7 @@ export default defineComponent({
 
     async select_chapter(chapter: Ichapter, source_identifier: string) {
       const chapter_images = await this.sources[source_identifier].get_images(chapter.url)
-      this.$emit('load-chapter', chapter_images, source_identifier + ' - ' + chapter.title, source_identifier)
+      this.$emit('load-chapter', chapter_images, source_identifier + ' - ' + chapter.title, source_identifier, this.manga_name)
       this.show_chapters = false
     },
 

@@ -1,6 +1,7 @@
 <template>
   <div class="change-button" v-if="Object.keys(reader_components).length !== 0">
     <div class="active-text">Currently active: {{ Object.keys(reader_components)[Object.keys(reader_components).length -1] }}</div>
+    <div @click="$emit('download-chapter', get_active_component_key())" class="active-text clickable">Download</div>
     <div>
       <button 
       v-if="reader_components[get_active_component_key()].imgs.previous_chapter"
@@ -59,7 +60,8 @@ interface Ireader_component {
   offset: number;
   index: number;
   chapter_title: string;
-  source_identifier: string
+  source_identifier: string;
+  manga_name: string
 }
 
 interface Ireader_conponents {
@@ -71,7 +73,7 @@ export default defineComponent({
     return {  };
   },
 
-  emits: ["change-order", "offset-plus", "offset-minus", "remove-component", 'load-next-chapter', 'load-previous-chapter'],
+  emits: ["change-order", "offset-plus", "offset-minus", "remove-component", 'load-next-chapter', 'load-previous-chapter', 'download-chapter'],
 
   props: {
     reader_components: {
@@ -147,6 +149,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.clickable {
+  cursor: pointer;
+}
+
 .container {
   width: 50vw;
   height: auto;

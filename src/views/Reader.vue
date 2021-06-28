@@ -39,6 +39,7 @@
       @remove-component="remove_component"
       @load-next-chapter="load_next_prev_chapter"
       @load-previous-chapter="load_next_prev_chapter"
+      @download-chapter="download_chapter"
     />
   </div>
 </template>
@@ -56,7 +57,8 @@ interface Ireader_component {
   offset: number;
   index: number;
   chapter_title: string;
-  source_identifier: string
+  source_identifier: string;
+  manga_name: string
 }
 
 interface Ireader_conponents {
@@ -86,18 +88,20 @@ export default defineComponent({
       }
     },
 
-    push_new_component(chapter_images: Iimages, chapter_title: string, source_identifier: string) {
+    push_new_component(chapter_images: Iimages, chapter_title: string, source_identifier: string, manga_name: string) {
       this.index += 1;
       this.reader_components[this.index] = {
         imgs: chapter_images,
         offset: 0,
         index: this.index,
         chapter_title: chapter_title,
-        source_identifier: source_identifier
+        source_identifier: source_identifier,
+        manga_name: manga_name
       };
       console.log(
         "Number of elements updated to: ",
-        Object.keys(this.reader_components).length
+        Object.keys(this.reader_components).length,
+        manga_name
       );
       if (Object.keys(this.reader_components).length === 1) {
         console.log('added listener')
@@ -135,6 +139,11 @@ export default defineComponent({
         console.log('Cannot update chapter title')
       }
     },
+    async download_chapter(component_key: number) {
+      const component: Ireader_component = this.reader_components[component_key]
+      await this.sources.mangakomi.download(component.imgs.images, component.manga_name, component.chapter_title)
+      console.log('downloaded the chapter!', component.manga_name, component.chapter_title)
+    }
   },
 
   data() {
