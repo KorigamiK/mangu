@@ -25,6 +25,7 @@
       :next_chapter="component.imgs.next_chapter"
       @load-next-chapter="load_next_prev_chapter"
       @load-previous-chapter="load_next_prev_chapter"
+      @download-chapter="download_chapter"
       />
 
     </div>

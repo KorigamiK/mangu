@@ -14,7 +14,7 @@ export abstract class manga_primitive extends request_client{
         const tasks = []
         const config = await file_system.config()
         for (const [index, url] of urls.entries()) {
-            tasks.push(this.ipcRenderer.invoke('download_file', url, join(config.manga_directory, manga, chapter, index.toString()), headers))
+            tasks.push(this.ipcRenderer.invoke('download_file', url, join(config.manga_directory, manga, chapter, index.toString().padStart(4, '0')), headers))
           }
         await Promise.all(tasks)
         return join((await file_system.config()).manga_directory, manga, chapter)
