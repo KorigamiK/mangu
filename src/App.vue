@@ -3,7 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/reader">Reader</router-link>
   </div>
-  // <Test />
+  <!-- <Test /> -->
   <router-view />
 </template>
 <script lang="ts">
