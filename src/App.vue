@@ -3,18 +3,18 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/reader">Reader</router-link>
   </div>
-  <Test />
+  // <Test />
   <router-view />
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import Test from "./components/TestingComponent.vue";
+// import Test from "./components/TestingComponent.vue";
 import { hello } from "./api/test";
 console.log(hello.thing);
 export default defineComponent({
   name: "App",
   components: {
-    Test,
+    // Test,
   },
   data() {
     return { dynamic_thing: hello.thing, my_secret: hello.secret };
