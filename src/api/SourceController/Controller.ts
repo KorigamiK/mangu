@@ -3,6 +3,7 @@ import rawmanga from './Sources/rawmanga'
 import kissaway from './Sources/kissaway'
 import mangathousand from './Sources/mangathousand'
 import otakuscan from './Sources/otakuscan'
+import offlinemanga from './Sources/offlinemanga'
 
 import {Imanga_source} from './MangaPrimitive'
 
@@ -16,5 +17,6 @@ export const sources: Isources = {
     rawmanga: new rawmanga(),
     kissaway: new kissaway(),
     manga1001: new mangathousand(),
-    otakuscan: new otakuscan()
+    otakuscan: new otakuscan(),
+    offlinemanga: new offlinemanga()
 } 

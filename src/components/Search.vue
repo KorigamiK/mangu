@@ -144,11 +144,13 @@ export default defineComponent({
       const ret = []
       let x = 0
       for (const i in this.sources) {
-        ret.push({
-          source_title: this.sources[i].TITLE,
-          identifier: this.sources[i].IDENTIFIER,
-          result: results[x] ? results[x] : null
-        })
+        if (!(!results[x] || !results[x].length)) {
+          ret.push({
+            source_title: this.sources[i].TITLE,
+            identifier: this.sources[i].IDENTIFIER,
+            result: results[x] ? results[x] : null
+          })
+      }
         x++
       }
       console.log(ret)

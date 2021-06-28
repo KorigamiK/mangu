@@ -4,7 +4,13 @@
   "private": false,
   "description": "A Manga reader that lets you learn.",
   "repository": "https://github.com/korigamik/mangu",
-  "keywords": ["manga", "mangu", "reader", "comic", "origami"],
+  "keywords": [
+    "manga",
+    "mangu",
+    "reader",
+    "comic",
+    "origami"
+  ],
   "author": "KorigamiK <korigamik@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -20,6 +26,7 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
+    "file-url": "^4.0.0",
     "node-fetch": "^2.6.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"

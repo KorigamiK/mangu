@@ -1,9 +1,11 @@
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { defineComponent } from "vue";
 import { sources, Isources } from "../api/SourceController/Controller";
 import { Imanga_source } from "../api/SourceController/MangaPrimitive";
 import { non_renderer } from "../api/SourceController/NonRenderer/Test";
 // import { request_client } from '../api/RequestClient'
+import file_system from '../api/filesystem';
 
 console.log("Testing component loaded");
 sources as Isources;
@@ -24,9 +26,9 @@ async function test_source(src: Imanga_source) {
   console.log(search_results, search_results.length)
   const selected_result = search_results[0];
   const chapters = await src.get_chapters(selected_result.url);
+  console.log(chapters)
   const imgs = await src.get_images(chapters[0].url);
-  // const imgs = await src.get_images('https://otakuscan.net/chapter/129287/iji_ranaide_nagatoro_san-chap-84');
-  // console.log(imgs, 1)
+  // const imgs = await src.get_images('url');
   console.log(selected_result.title, "Is selected");
   console.log(search_results);
   console.log(`Only ${chapters.length} chapters found`);
@@ -43,11 +45,16 @@ const tester = async (): Promise<void> => {
   console.log("TESTS COMPLETED SUCCESSFULLY!");
 };
 
-// (async () => await test_source(sources.otakuscan))();
+// (async () => await test_source(sources.offlinemanga))();
 
 // (async () => tester())();
 
-const renderer_test = new non_renderer()
+const renderer_test = new non_renderer();
+
+
+// (async () => {
+//   console.log(await file_system.folders(), await file_system.config())
+//   })()
 
 export default defineComponent({
   name: "Test",

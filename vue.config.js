@@ -1,5 +1,8 @@
 module.exports = {
   lintOnSave: false,
+  configureWebpack: {
+    target: "electron-renderer"
+  },
   pluginOptions: {
     electronBuilder: {
       preload: 'src/electronHandler/preload.ts',

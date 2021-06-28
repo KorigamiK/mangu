@@ -2,6 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <br>
+    <a href="https://github.com/KorigamiK/" class="onright">KorigamiK</a>
     <p>
       For more imformation about this project<br>
       check out the
@@ -45,5 +46,8 @@ li {
 }
 a {
   color: #42b983;
+}
+onright {
+  text-align: right;
 }
 </style>

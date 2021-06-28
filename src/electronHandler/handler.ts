@@ -3,6 +3,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { Blacklist } from '../FilterList'
 import path from 'path'
 import { non_renderer_requests_client } from './nonRendererRequestsClient'
+import { existsSync, mkdirSync, writeFile, readFileSync } from 'fs'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 console.log(`Starting in development = ${isDevelopment}`)
@@ -65,6 +66,32 @@ export default class Main {
         Main.mainWindow = null
     }
 
+    private static filesystem_init() {
+        const config_directory = path.join(Main.application.getPath('userData'), 'config.json');
+        let config: { manga_directory: string }
+
+        if (!existsSync(config_directory)) {
+            const manga_dir = path.join(Main.application.getPath('pictures'), 'Manags')
+            if (!existsSync(manga_dir)) mkdirSync(manga_dir)
+            config = {
+                manga_directory: manga_dir
+            }
+
+            writeFile(config_directory, JSON.stringify(config), 'utf-8', (err) => {if (err) console.log('Something went wrong whilt writing file', err)})
+            console.log('config created')
+
+        } else {
+            config = JSON.parse(readFileSync(config_directory, {encoding:'utf-8', flag:'r'}))
+            console.log('config found')
+        }
+
+        ipcMain.handle('get_file_path', () => {
+            return Main.application.getAppPath()
+        })
+
+        ipcMain.handle('get_config', () => { return config })
+    }
+
     private static async on_ready() {
         // if (isDevelopment && !process.env.IS_TEST) {
         //     // Install Vue Devtools
@@ -123,5 +150,6 @@ export default class Main {
         Main.application.on('window-all-closed', Main.on_all_window_closed)
         Main.application.on('ready', Main.on_ready)
         Main.request_client_init()
+        Main.filesystem_init()
     }
 }

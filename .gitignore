@@ -26,3 +26,4 @@ temporarycoderunnerfile
 #Electron-builder output
 /dist_electron
 package-lock.json
+Mangas/*
