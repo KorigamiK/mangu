@@ -19,15 +19,22 @@ export class non_renderer_requests_client {
   };
 
   public static async download(url: string, download_location: string, headers={}): Promise<number> {
-    if (url.startsWith('file:')) {
-      return -1;
-    }
+    if (url.startsWith('file:')) return -1
+    download_location = download_location.replaceAll('\n', '')
     const matches = url.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
-    if (!existsSync(dirname(download_location))) await mkdir(dirname(download_location), {recursive: true})
+    if (!existsSync(dirname(download_location))) {
+      console.log(download_location)
+      try{
+        await mkdir(dirname(download_location), {recursive: true});
+      }catch(e){
+        console.log(e)
+        return -2
+      }
+    }
     if (!matches) {
       const response = await fetch(url, headers)
       if (!response.ok) {
-        console.log(`unexpected response ${response.statusText}`)
+        console.log(`Unexpected response ${url} ${response.statusText} ${response.status}`)
         return response.status
       }
       const mime = response.headers.get("content-type") || 'unknown'
