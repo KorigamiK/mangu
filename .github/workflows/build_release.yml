@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
       - uses: actions/checkout@v1
@@ -36,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "*.md;dist_electron/*.exe;LICENSE;dist_electron/*.deb;dist_electron/*.AppImage"
+          file: "*.md;dist_electron/*.exe;LICENSE;dist_electron/*.deb;dist_electron/*.AppImage;dist_electron/*.dmg"
           delete_file: "*.exe"
           tag_name: continuous_releases
           overwrite: true
