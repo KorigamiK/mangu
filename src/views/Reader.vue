@@ -1,5 +1,5 @@
 <template>
-  <Search @load-chapter="push_new_component" :sources="sources"/>
+  <Search @load-chapter="push_new_component" :sources="sources" @download-selection="download_selection"/>
   <br />
   <button class="viewer-button" @click="side_by_side = !side_by_side">
     Change Viewer
@@ -50,7 +50,7 @@ import { defineComponent } from "vue";
 import SourceReader from "@/components/SourceReader.vue";
 import Search from "@/components/Search.vue";
 import CoolReader from "@/components/CoolReader.vue";
-import { Iimages } from "@/api/SourceController/MangaPrimitive";
+import { Ichapter, Iimages } from "@/api/SourceController/MangaPrimitive";
 import { sources } from "../api/SourceController/Controller";
 
 interface Ireader_component {
@@ -128,7 +128,7 @@ export default defineComponent({
     offset_plus(key: number) {
       this.reader_components[key].offset += 1;
     },
-    offset_minus(key: number) {
+    offset_minus(key: number): void {
       this.reader_components[key].offset -= 1;
     },
     async load_next_prev_chapter(link: string, component_key: number, source_identifier: string) {
@@ -144,6 +144,21 @@ export default defineComponent({
       const component: Ireader_component = this.reader_components[component_key]
       await this.sources.mangakomi.download(component.imgs.images, component.manga_name, component.chapter_title)
       console.log('downloaded the chapter!', component.manga_name, component.chapter_title)
+    },
+    async download_selection(source_identifier: string, manga_name: string, chapters: Ichapter[], callback: () => never[]) {
+      console.log('Downloading...', source_identifier)
+      const source = this.sources[source_identifier]
+      const tasks = []
+      const get_images_and_download = async (chapter: Ichapter) => {
+        const imgs =  await source.get_images(chapter.url)
+        return await source.download(imgs.images, manga_name, chapter.title)
+      }
+      for (const chapter of chapters) {
+        tasks.push(get_images_and_download(chapter))
+      }
+      await Promise.all(tasks);
+      callback()
+      console.log('Downloads complete!')
     }
   },
 
