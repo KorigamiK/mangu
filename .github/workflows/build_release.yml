@@ -24,6 +24,8 @@ jobs:
       - name: Install dependencies & Build release
         run: |
           npm i
+          mv ./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js ./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js.old
+          cp ./reactivity.esm-bundler.js.new ./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js
           npm run electron:build        
 
       - name: Created files
