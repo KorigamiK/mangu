@@ -1,6 +1,10 @@
 # Mangu Reader
 A simple and fast manga reader that helps you read manga in various languages and lets you switch between them with one click.
 
+# Examples
+This shows how switching between languages feels like:
+![switch b/w languages](/example/switching.gif)
+
 # Features
 - Fast loading
 - Different languages from different sources
