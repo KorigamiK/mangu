@@ -4,6 +4,7 @@ import file_system from '@/api/Filesystem'
 import fs from 'fs'
 import { dirname, join } from 'path'
 import fileUrl from 'file-url'
+import { filter as fuzzy_filter } from 'fuzzaldrin'
 
 export default class mangathousand extends manga_primitive implements Imanga_source {
     public constructor() {
@@ -15,7 +16,7 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
         if (!this.CONFIG.manga_directory) this.CONFIG = await file_system.config()
         const all_series = fs.readdirSync(this.CONFIG.manga_directory!).filter(serie => fs.statSync(join(this.CONFIG.manga_directory!, serie)).isDirectory())
         const results = [] as Isearch_results
-        all_series.filter(s => s.toLowerCase().startsWith(query.toLowerCase())).forEach(serie => {
+        fuzzy_filter(all_series, query).forEach(serie => {
             results.push({
                 title: serie,
                 url: join(this.CONFIG.manga_directory!, serie)

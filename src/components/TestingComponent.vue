@@ -26,12 +26,12 @@ async function test_source(src: Imanga_source) {
   const selected_result = search_results[0];
   const chapters = await src.get_chapters(selected_result.url);
   console.log(chapters)
-  const imgs = await src.get_images(chapters[0].url);
+  const imgs = await src.get_images(chapters[3].url);
   // const imgs = await src.get_images('url');
   console.log(selected_result.title, "Is selected");
   console.log(search_results);
   console.log(`Only ${chapters.length} chapters found`);
-  console.log(JSON.stringify(imgs.images));
+  console.log(JSON.stringify(imgs));
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,7 +44,7 @@ const tester = async (): Promise<void> => {
   console.log("TESTS COMPLETED SUCCESSFULLY!");
 };
 
-// (async () => await test_source(sources.mangakomi))();
+// (async () => await test_source(sources.mangasee))();
 
 const download_test = async () => {
   const imgs = ["https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/20.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/21.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/22.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/23.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/24.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/25.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/26.jpg"]
