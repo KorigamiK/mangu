@@ -2,7 +2,8 @@ import { join } from 'path'
 import file_system from '../Filesystem'
 import { request_client } from '../RequestClient'
 interface Iconfig_primitive {
-    manga_directory: string | null
+    manga_directory: string | null,
+    disabled_sources: string[]
 }
 
 export abstract class manga_primitive extends request_client{
@@ -10,6 +11,7 @@ export abstract class manga_primitive extends request_client{
     public readonly IDENTIFIER: string
     public readonly TITLE: string
     public CONFIG: Iconfig_primitive
+
     public async download(urls: string[], manga: string, chapter: string, headers={}): Promise<string> {
         const tasks = []
         const config = await file_system.config()
@@ -19,13 +21,14 @@ export abstract class manga_primitive extends request_client{
         await Promise.all(tasks)
         return join((await file_system.config()).manga_directory, manga, chapter)
     }
+
     public constructor(website_home: string, identifier: string, title: string, header_options?: RequestInit) {
         super()
         this.WEBSITE_HOME = new URL(website_home)
         this.IDENTIFIER = identifier
         this.TITLE = title
         this.header_options = header_options ? header_options : {}
-        this.CONFIG = {manga_directory: null}
+        this.CONFIG = {manga_directory: null, disabled_sources: []}
     }
 }
 

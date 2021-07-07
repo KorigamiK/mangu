@@ -18,6 +18,26 @@ export const sources: Isources = {
     kissaway: new kissaway(),
     manga1001: new mangathousand(),
     otakuscan: new otakuscan(),
+    mangasee: new mangasee(),
     offlinemanga: new offlinemanga(),
-    mangasee: new mangasee()
-} 
+}
+
+interface Iidentifier {
+    identifier: string,
+    title: string,
+    website_home: string,
+}
+
+function get_identifiers() {
+    const identifiers: Iidentifier[] = []
+    for (const source in sources) {
+        identifiers.push({
+            identifier: sources[source].IDENTIFIER,
+            title: sources[source].TITLE,
+            website_home: sources[source].WEBSITE_HOME.toString()
+        })
+    }
+    return identifiers
+}
+
+export const all_identifiers = get_identifiers()

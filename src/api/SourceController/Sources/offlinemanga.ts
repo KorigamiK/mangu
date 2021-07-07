@@ -8,7 +8,7 @@ import { filter as fuzzy_filter } from 'fuzzaldrin'
 
 export default class mangathousand extends manga_primitive implements Imanga_source {
     public constructor() {
-        super('file:///home/origami/Documents/Mangu/mangu/', 'offlinemanga', 'Downloaded Manga')
+        super('file:///home/pictures/Mangas', 'offlinemanga', 'Downloaded Manga')
         this.header_options = { mode: 'no-cors' }
     }
 

@@ -52,6 +52,7 @@ import Search from "@/components/Search.vue";
 import CoolReader from "@/components/CoolReader.vue";
 import { Ichapter, Iimages } from "@/api/SourceController/MangaPrimitive";
 import { sources } from "../api/SourceController/Controller";
+import file_system from "../api/Filesystem";
 
 interface Ireader_component {
   imgs: Iimages;
@@ -72,6 +73,16 @@ export default defineComponent({
     SourceReader,
     Search,
     CoolReader,
+  },
+
+  async created() {
+    const remove_disabled = async () => {
+        const { disabled_sources } = await file_system.config()
+        for (const identifier in this.sources) {
+          if (disabled_sources.includes(identifier)) {delete this.sources[identifier]; console.log('Removed disabled sources')}
+        }
+      }
+    await remove_disabled()
   },
 
   mounted() {

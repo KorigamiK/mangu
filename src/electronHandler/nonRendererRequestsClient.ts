@@ -23,7 +23,7 @@ export class non_renderer_requests_client {
     download_location = download_location.replaceAll('\n', '')
     const matches = url.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
     if (!existsSync(dirname(download_location))) {
-      console.log(download_location)
+      console.log('Created', dirname(download_location))
       try{
         await mkdir(dirname(download_location), {recursive: true});
       }catch(e){

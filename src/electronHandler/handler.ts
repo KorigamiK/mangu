@@ -68,13 +68,14 @@ export default class Main {
 
     private static filesystem_init() {
         const config_directory = path.join(Main.application.getPath('userData'), 'config.json');
-        let config: { manga_directory: string }
+        let config: { manga_directory: string, disabled_sources: string[] }
 
         if (!existsSync(config_directory)) {
             const manga_dir = path.join(Main.application.getPath('pictures'), 'Manags')
             if (!existsSync(manga_dir)) mkdirSync(manga_dir)
             config = {
-                manga_directory: manga_dir
+                manga_directory: manga_dir,
+                disabled_sources: []
             }
 
             writeFile(config_directory, JSON.stringify(config), 'utf-8', (err) => {if (err) console.log('Something went wrong whilt writing file', err)})
@@ -82,9 +83,12 @@ export default class Main {
 
         } else {
             config = JSON.parse(readFileSync(config_directory, {encoding:'utf-8', flag:'r'}))
+            if (!config.disabled_sources) {
+                config.disabled_sources = []
+                writeFile(config_directory, JSON.stringify(config), 'utf-8', (err) => {console.log('Updated the config.');if (err) console.log('Something went wrong whilt writing file', err)})
+            }
             console.log('config found')
         }
-
         ipcMain.handle('get_file_path', () => {
             return Main.application.getAppPath()
         })
@@ -92,6 +96,10 @@ export default class Main {
         ipcMain.handle('get_config', () => { return config })
 
         ipcMain.handle('download_file', async (event, url, download_location, headers={}) => await non_renderer_requests_client.download(url, download_location, headers))
+
+        ipcMain.handle('update_config', async (event, new_config: typeof config) => {
+            writeFile(config_directory, JSON.stringify(new_config), 'utf-8', (err) => {if (err) console.log('Something went wrong whilt writing file', err)})
+        })
     }
 
     private static async on_ready() {
