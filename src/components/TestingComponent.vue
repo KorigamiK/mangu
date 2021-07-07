@@ -44,7 +44,7 @@ const tester = async (): Promise<void> => {
   console.log("TESTS COMPLETED SUCCESSFULLY!");
 };
 
-// (async () => await test_source(sources.mangasee))();
+// (async () => await test_source(sources.catmanga))();
 
 const download_test = async () => {
   const imgs = ["https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/20.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/21.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/22.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/23.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/24.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/25.jpg","https://cdn.mangakomi.com/manga_60079e016ef1b/714f2d308a6e0c0929de7afb756ff983/26.jpg"]

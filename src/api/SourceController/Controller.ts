@@ -5,6 +5,8 @@ import mangathousand from './Sources/mangathousand'
 import otakuscan from './Sources/otakuscan'
 import offlinemanga from './Sources/offlinemanga'
 import mangasee from './Sources/mangasee'
+import catmanga from './Sources/catmanga'
+
 import {Imanga_source} from './MangaPrimitive'
 
 export interface Isources {
@@ -19,6 +21,7 @@ export const sources: Isources = {
     manga1001: new mangathousand(),
     otakuscan: new otakuscan(),
     mangasee: new mangasee(),
+    catmanga: new catmanga(),
     offlinemanga: new offlinemanga(),
 }
 
