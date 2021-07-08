@@ -24,7 +24,7 @@ import { all_identifiers } from "../api/SourceController/Controller";
 import file_system from "../api/Filesystem"
 
 export default defineComponent({
-  name: "Home",
+  name: "Sources",
   async created() {
     this.config = await file_system.config()
     this.fetched_disabled_sources  = true
