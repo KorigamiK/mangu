@@ -37,8 +37,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "*.md;dist_electron/*.exe;LICENSE;dist_electron/*.deb;dist_electron/*.AppImage;dist_electron/*.dmg"
-          delete_file: "*.exe"
+          # delete_file: "*.exe"
           tag_name: continuous_releases
-          overwrite: true
+          # overwrite: true
           verbose: true
           draft: false

@@ -67,7 +67,7 @@ interface Ireader_component {
 }
 
 interface Ireader_conponents {
-  [key: number]: Ireader_component;
+  [key: string]: Ireader_component;
 }
 
 export default defineComponent({
@@ -132,22 +132,22 @@ export default defineComponent({
       return zipLongest(undefined, ...images_array);
     },
 
-    offset_plus(key: number) {
+    offset_plus(key: string) {
       this.$emit("offset-plus", key);
     },
 
-    offset_minus(key: number) {
+    offset_minus(key: string) {
       this.$emit("offset-minus", key);
     },
 
-    remove_component(component_key: number) {
+    remove_component(component_key: string) {
       this.$emit('remove-component', component_key)
       if (Object.keys(this.reader_components).length === 0) {
         window.removeEventListener('keypress', this.change_order_keyboard_listener)
         console.log('listener removed')
       }
     },
-    get_active_component_key() {
+    get_active_component_key(): string {
       return Object.keys(this.reader_components)[Object.keys(this.reader_components).length -1]
     },
 

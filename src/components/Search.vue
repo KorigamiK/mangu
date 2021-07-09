@@ -13,13 +13,13 @@
   <div v-if="show_chapters">
     <button @click="show_chapters = false">Hide Chapters</button>
   </div>
-  <div v-if="chapters !== [{}] && !show_chapters">
+  <div v-if="Object.keys(chapters[0]).length && !show_chapters">
     <button @click="show_chapters = true">Show Chapters</button>
   </div>
 
   <form @submit.prevent="handel_search" v-if="show_form">
     <h3>Search</h3>
-    <label>Series Name</label>
+    <label>Series Name:</label>
     <input type="search_query" v-model="search_query" required />
 
     <label>Query:</label>
@@ -32,7 +32,7 @@
       <option value="ALL_SOURCES">All Sources</option>
       <option
         v-for="source in sources"
-        v-bind:value="source.IDENTIFIER"
+        :value="source.IDENTIFIER"
         :key="source.IDENTIFIER"
       >
         {{ source.TITLE }}
@@ -116,7 +116,11 @@
 <script lang='ts'>
 import { defineComponent, PropType } from "vue";
 import { Isources } from "../api/SourceController/Controller";
-import { search_result, Isearch_results, Ichapter } from "../api/SourceController/MangaPrimitive";
+import {
+  search_result,
+  Isearch_results,
+  Ichapter,
+} from "../api/SourceController/MangaPrimitive";
 
 interface Iall_results {
   source_title: string;
@@ -196,7 +200,8 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let results: any[] = [];
       try {
-        for (const source in this.sources) tasks.push(this.sources[source].search(this.search_query))
+        for (const source in this.sources)
+          tasks.push(this.sources[source].search(this.search_query));
         results = await Promise.all(tasks);
       } catch (e) {
         console.log(e);
@@ -219,7 +224,7 @@ export default defineComponent({
       return ret;
     },
     download_selected() {
-      const callback = () => this.to_download = []
+      const callback = () => (this.to_download = []);
       this.$emit(
         "download-selection",
         this.selected_source,
@@ -270,7 +275,7 @@ select {
   border-bottom: 1px solid #ddd;
   color: #555;
 }
-input[type=checkbox] {
+input[type="checkbox"] {
   display: inline-block;
   transform: translate(0, -14px);
   margin: 0 30px 0 0;
@@ -281,37 +286,35 @@ input[type=checkbox] {
   height: 0px;
 }
 
-input[type=checkbox]:checked:before {
+input[type="checkbox"]:checked:before {
   content: "";
   display: block;
   position: absolute;
   width: 15px;
   height: 15px;
-  border: 4px solid #FFCB9A;
+  border: 4px solid #ffcb9a;
   border-radius: 15px;
-  background-color: #445768;  
+  background-color: #445768;
   transition: all 0.2s linear;
 }
 
-
-input[type=checkbox]:before {
+input[type="checkbox"]:before {
   content: "";
   display: block;
   position: absolute;
   width: 15px;
   height: 15px;
-  border: 4px solid #FFCB9A;
+  border: 4px solid #ffcb9a;
   border-radius: 3px;
   background-color: #445768;
 }
 
-
-input[type=checkbox]:after {
+input[type="checkbox"]:after {
   content: "";
   display: block;
   width: 0px;
   height: 0px;
-  border: solid #FFCB9A;
+  border: solid #ffcb9a;
   border-width: 0 0px 0px 0;
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
@@ -322,12 +325,12 @@ input[type=checkbox]:after {
   transition: all 0.2s linear;
 }
 
-input[type=checkbox]:checked:after {
+input[type="checkbox"]:checked:after {
   content: "";
   display: block;
   width: 2px;
   height: 10px;
-  border: solid #FFCB9A;
+  border: solid #ffcb9a;
   border-width: 0 5px 5px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
