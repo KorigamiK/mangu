@@ -9,7 +9,7 @@
       v-if="reader_components[get_active_component_key()].imgs.previous_chapter"
       @click="$emit('load-previous-chapter', reader_components[get_active_component_key()].imgs.previous_chapter, get_active_component_key(), reader_components[get_active_component_key()].source_identifier)"
       >Previous</button>
-
+      &nbsp;
       <button 
       v-if="reader_components[get_active_component_key()].imgs.next_chapter"
       @click="$emit('load-next-chapter', reader_components[get_active_component_key()].imgs.next_chapter, get_active_component_key(), reader_components[get_active_component_key()].source_identifier)"
@@ -209,7 +209,7 @@ export default defineComponent({
 }
 
 .change-button > div > button {
-  width: 6vw;
+  width: 5.5vw;
   background: #eee;
   border-radius: 20px;
   font-size: 12px;
@@ -220,6 +220,7 @@ export default defineComponent({
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 5px;
+  border: none;
 }
 
 
@@ -235,6 +236,18 @@ export default defineComponent({
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 5px;
+  border: none;
+}
+
+.active-text {
+  background-color:#eee;
+  border-radius: 13px;
+  margin-bottom: 8px;
+  color: #777;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  padding: 6px 6px 6px 6px
 }
 
 .control-button {
@@ -276,17 +289,6 @@ export default defineComponent({
 
 .hide {
   display: none;
-}
-
-.active-text {
-  background-color:#eee;
-  border-radius: 13px;
-  margin-bottom: 8px;
-  color: #777;
-  font-size: 12px;
-  letter-spacing: 1px;
-  font-weight: bold;
-  padding: 6px 6px 6px 6px
 }
 
 .chapters {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Imanga_source, manga_primitive, Isearch_results, Ichapter, Iimages, search_result } from '../MangaPrimitive'
-import { filter as fuzzy_filter } from 'fuzzaldrin'
+import Fuse from 'fuse.js'
 
 interface mangasee_manga {
     i: string,
@@ -41,12 +41,16 @@ export default class mangasee extends manga_primitive implements Imanga_source {
             const resp = await this.post(this.WEBSITE_HOME + '/_search.php')
             this.ALL_MANGA = await resp.json()
         }
-        const results = fuzzy_filter(this.ALL_MANGA, query, {key: 's', maxResults: 20})
-        return results.map(manga => {
+
+        const fuse = new Fuse(this.ALL_MANGA, {keys: ['s', 'a'], includeScore: false, findAllMatches: false})
+
+        const results = fuse.search(query, {limit: 20})
+
+        return results.map(({ item }) => {
             return {
-                url: this.WEBSITE_HOME + 'manga/' + manga.i,
-                title: manga.s,
-                img: this.COVER_API + manga.i + '.jpg'
+                url: this.WEBSITE_HOME + 'manga/' + item.i,
+                title: item.s,
+                img: this.COVER_API + item.i + '.jpg'
             } as search_result
         })
     }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Imanga_source, manga_primitive, Isearch_results, Ichapter, Iimages } from '../MangaPrimitive'
-import { filter as fuzzy_filter } from 'fuzzaldrin'
+import Fuse from 'fuse.js'
 
 interface catmanga_serie {
     all_covers: Array<{source: string}>
@@ -62,13 +62,15 @@ export default class catmanga extends manga_primitive implements Imanga_source {
             this.ALL_MANGA = JSON.parse(dom.querySelector('script#__NEXT_DATA__')!.textContent!) as all_catmanga
         }
 
-        const filtered = fuzzy_filter(this.ALL_MANGA.props.pageProps.series, query, {key: 'title', maxResults: 20})
+        const fuse = new Fuse(this.ALL_MANGA.props.pageProps.series, {keys: ['alt_titles', 'title'], findAllMatches: false})
+        const filtered = fuse.search(query, {limit: 20})
+
         const ret = [] as Isearch_results
-        for (const i of filtered) {
+        for (const { item } of filtered) {
             ret.push({
-                title: i.title,
-                url: new URL(`/series/${i.series_id}`, this.WEBSITE_HOME).href,
-                img: i.cover_art.source
+                title: item.title,
+                url: new URL(`/series/${item.series_id}`, this.WEBSITE_HOME).href,
+                img: item.cover_art.source
             })
         }
         return ret
@@ -79,7 +81,8 @@ export default class catmanga extends manga_primitive implements Imanga_source {
         const ret = [] as Ichapter[]
         for (const serie of this.ALL_MANGA!.props.pageProps.series) {
             if (serie.series_id === manga_id) {
-                for (const chapter of serie.chapters) {
+                const sorted_chapters = serie.chapters.sort((a, b) => `${a.number} ${a.title || ''}`.localeCompare(`${b.number} ${b.title || ''}`, navigator.languages[0] || navigator.language, {numeric: true, ignorePunctuation: true}))
+                for (const chapter of sorted_chapters) {
                     ret.push({
                         title: `${chapter.number} - ${chapter.title || serie.title}`,
                         url: `${url}/${chapter.number}`

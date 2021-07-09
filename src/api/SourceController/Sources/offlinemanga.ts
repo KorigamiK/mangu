@@ -4,7 +4,7 @@ import file_system from '@/api/Filesystem'
 import fs from 'fs'
 import { dirname, join } from 'path'
 import fileUrl from 'file-url'
-import { filter as fuzzy_filter } from 'fuzzaldrin'
+import Fuse from 'fuse.js'
 
 export default class mangathousand extends manga_primitive implements Imanga_source {
     public constructor() {
@@ -15,18 +15,21 @@ export default class mangathousand extends manga_primitive implements Imanga_sou
     async search(query: string): Promise<Isearch_results | null> {
         if (!this.CONFIG.manga_directory) this.CONFIG = await file_system.config()
         const all_series = fs.readdirSync(this.CONFIG.manga_directory!).filter(serie => fs.statSync(join(this.CONFIG.manga_directory!, serie)).isDirectory())
+        .sort((a, b) => a.localeCompare(b, navigator.languages[0] || navigator.language, {numeric: true, ignorePunctuation: true}))
         const results = [] as Isearch_results
-        fuzzy_filter(all_series, query).forEach(serie => {
+        const fuse = new Fuse(all_series)
+        fuse.search(query).forEach(({item}) => {
             results.push({
-                title: serie,
-                url: join(this.CONFIG.manga_directory!, serie)
+                title: item,
+                url: join(this.CONFIG.manga_directory!, item)
             })
         })
         return results
     }
 
     async get_chapters(chapter_directory: string): Promise<Array<Ichapter>> {
-        const all_chapters = fs.readdirSync(chapter_directory).filter(chapter => fs.statSync(join(chapter_directory, chapter)).isDirectory())
+        const all_chapters = fs.readdirSync(chapter_directory).filter(chapter => fs.statSync(join(chapter_directory, chapter)).isDirectory()).sort((a, b) => a.localeCompare(b, navigator.languages[0] || navigator.language, {numeric: true, ignorePunctuation: true}))
+
         const ret = [] as Ichapter[]
         all_chapters.forEach((chapter, index) => {
             ret.push({

@@ -247,6 +247,37 @@ export default defineComponent({
   border: 2px solid rgb(53, 53, 53);
 }
 
+.chapters-contain{
+  display: grid;
+  padding: 0 32vw 0 32vw;
+  gap: 1rem;
+  grid-template-columns: 60px auto;
+}
+
+.chapters-contain > p {
+    background: #dbdbdb;
+    -webkit-transition: .05s all;   
+    -webkit-transition-delay: 05s; 
+    -moz-transition: .05s all;   
+    -moz-transition-delay: 05s; 
+    -ms-transition: .05s all;   
+    -ms-transition-delay: 05s; 
+    -o-transition: .05s all;   
+    -o-transition-delay: 05s;
+    transition: .05s all;   
+    transition-delay: 0.1s; 
+}
+
+.chapters-contain > p:hover {
+    background:#ffe3e3;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -ms-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    transition-delay: 0s;
+}
+
+
 form {
   max-width: 420px;
   margin: 30px auto;
@@ -277,7 +308,7 @@ select {
 }
 input[type="checkbox"] {
   display: inline-block;
-  transform: translate(0, -14px);
+  transform: translate(0, 12px);
   margin: 0 30px 0 0;
   padding: 10px 0 0 0;
   position: relative;

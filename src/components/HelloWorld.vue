@@ -4,6 +4,10 @@
     <br>
     <a href="https://github.com/KorigamiK/" class="onright">KorigamiK</a>
     <p>
+      <i>Subscribe to the latest updates by <br>Clicking on the watch button on the GitHub repository.</i>
+    </p>
+    <br />
+    <p>
       For more imformation about this project<br>
       check out the
       <a href="https://github.com/KorigamiK/mangu" target="_blank" rel="noopener">GitHub repository</a>.
