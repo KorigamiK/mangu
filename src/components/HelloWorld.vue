@@ -6,20 +6,19 @@
     <h2 v-else>Loading version</h2>
 
     <div v-if="version && latest_version">
+      <button @click="check_updates(force=true)" class="button">Check for updates</button>
       <h4 v-if="version === latest_version">You are on the latest version</h4>
       <h4 v-else>
         Version {{ latest_version }} now available. Get it from the GitHub
         repository releases.
       </h4>
     </div>
-    <p v-else>Fetching version</p>
+    <h4 v-else>Fetching version ...</h4>
 
     <a href="https://github.com/KorigamiK/" class="onright">KorigamiK</a>
     <p>
-      <i
-        >Subscribe to the latest updates by <br />Clicking on the watch button
-        on the GitHub repository.</i
-      >
+      <i>Subscribe to the latest updates by <br />Clicking on the watch button
+        on the GitHub repository.</i>
     </p>
     <br />
     <p>
@@ -62,11 +61,19 @@ export default defineComponent({
     const version: Ref<null | string> = ref(null);
     const latest_version: Ref<null | string> = ref(null);
 
-    request_client.current_version().then((val) => (version.value = val));
-    request_client
-      .get_latest_version()
-      .then((val) => (latest_version.value = val));
-    return { version, latest_version };
+
+    const check_updates = (force=false) => {
+      version.value = null
+      latest_version.value = null
+      request_client.get_current_version().then((val) => (version.value = val));
+      request_client
+        .get_latest_version(force)
+        .then((val) => (latest_version.value = val));
+    }
+
+    check_updates()
+
+    return { version, latest_version, check_updates };
   },
 });
 </script>
@@ -89,5 +96,17 @@ a {
 }
 onright {
   text-align: right;
+}
+.button {
+  background-color: #42b983; /* Green */
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
 }
 </style>
