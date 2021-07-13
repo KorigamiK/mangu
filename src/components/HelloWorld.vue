@@ -1,36 +1,72 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <br>
+
+    <h4 v-if="version">v{{ version }}</h4>
+    <h2 v-else>Loading version</h2>
+
+    <div v-if="version && latest_version">
+      <h4 v-if="version === latest_version">You are on the latest version</h4>
+      <h4 v-else>
+        Version {{ latest_version }} now available. Get it from the GitHub
+        repository releases.
+      </h4>
+    </div>
+    <p v-else>Fetching version</p>
+
     <a href="https://github.com/KorigamiK/" class="onright">KorigamiK</a>
     <p>
-      <i>Subscribe to the latest updates by <br>Clicking on the watch button on the GitHub repository.</i>
+      <i
+        >Subscribe to the latest updates by <br />Clicking on the watch button
+        on the GitHub repository.</i
+      >
     </p>
     <br />
     <p>
-      For more imformation about this project<br>
+      For more imformation about this project<br />
       check out the
-      <a href="https://github.com/KorigamiK/mangu" target="_blank" rel="noopener">GitHub repository</a>.
+      <a
+        href="https://github.com/KorigamiK/mangu"
+        target="_blank"
+        rel="noopener"
+        >GitHub repository</a
+      >.
     </p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { hello } from '../api/test';
-let x = new hello()
-console.log(x.thing)
-x.thing = "This was tampered with"
+import { defineComponent, Ref, ref } from "vue";
+import { hello } from "../api/test";
+import { request_client } from "../api/RequestClient";
+
+let x = new hello();
+console.log(x.thing);
+x.thing = "This was tampered with";
+
 export default defineComponent({
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
-    msg: String,
     derived_message: {
       type: String,
-      required: false,
-      default: x.thing
+      required: true,
     },
-    secret: String
+    msg: {
+      required: true,
+      type: String,
+    },
+    secret: String,
+  },
+
+  setup() {
+    const version: Ref<null | string> = ref(null);
+    const latest_version: Ref<null | string> = ref(null);
+
+    request_client.current_version().then((val) => (version.value = val));
+    request_client
+      .get_latest_version()
+      .then((val) => (latest_version.value = val));
+    return { version, latest_version };
   },
 });
 </script>
