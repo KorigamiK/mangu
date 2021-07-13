@@ -57,4 +57,24 @@ body {
   color: #e6e6e6
 }
 
+::-webkit-scrollbar {
+  width: 1em;
+  min-height: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background-color: #b9c0c2;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #859497;
+}
 </style>
