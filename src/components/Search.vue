@@ -13,7 +13,7 @@
   <div v-if="show_chapters">
     <button @click="show_chapters = false">Hide Chapters</button>
   </div>
-  <div v-if="Object.keys(chapters[0]).length && !show_chapters">
+  <div v-if="chapters.length && !show_chapters">
     <button @click="show_chapters = true">Show Chapters</button>
   </div>
 
@@ -145,7 +145,7 @@ export default defineComponent({
       show_form: true,
       search_results: [] as Isearch_results,
       show_chapters: false,
-      chapters: [{}] as Ichapter[],
+      chapters: [] as Ichapter[],
       all_results: [{}] as Iall_results[],
       manga_name: "",
       to_download: [],

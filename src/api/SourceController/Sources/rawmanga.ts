@@ -48,7 +48,6 @@ export default class rawmanga extends manga_primitive implements Imanga_source {
         if (ret.previous_chapter) ret.previous_chapter = url.split('/').slice(0, -1).join('/') + '/' +ret.previous_chapter
         ret.next_chapter = dom.querySelector('select.chapter-list [selected]')?.previousElementSibling?.getAttribute('value')
         if (ret.next_chapter) ret.next_chapter = url.split('/').slice(0, -1).join('/') + '/' +ret.next_chapter
-
         return ret
     }
 }
