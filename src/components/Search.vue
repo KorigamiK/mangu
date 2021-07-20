@@ -59,7 +59,7 @@
       >
         <p>{{ results.source_title }}</p>
         <p
-          class="pill"
+          class="pill result-element all-sources-result"
           v-for="result in results.result"
           :key="result"
           @click="
@@ -78,7 +78,7 @@
       :key="result.title"
       v-else
     >
-      <p class="pill" @click="select_result(result, selected_source)">
+      <p class="pill result-element single-result" @click="select_result(result, selected_source)">
         {{ result.title }}
       </p>
       <br />
@@ -240,11 +240,18 @@ export default defineComponent({
 <style scoped>
 .results-flex-container {
   display: flex;
+
 }
 
 .results-flex-child {
   flex: 1;
+  justify-content: center;
   border: 2px solid rgb(53, 53, 53);
+}
+
+.all-sources-result {
+  max-width: 30rem;
+  width: 60%;
 }
 
 .chapters-contain{
@@ -254,7 +261,7 @@ export default defineComponent({
   grid-template-columns: 60px auto;
 }
 
-.chapters-contain > p {
+ .chapters-contain > p{
     background: #dbdbdb;
     -webkit-transition: .05s all;   
     -webkit-transition-delay: 05s; 
@@ -268,7 +275,7 @@ export default defineComponent({
     transition-delay: 0.1s; 
 }
 
-.chapters-contain > p:hover {
+.result-element:hover, .chapters-contain > p:hover{
     background:#ffe3e3;
     -webkit-transition-delay: 0s;
     -moz-transition-delay: 0s;

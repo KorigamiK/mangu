@@ -37,7 +37,9 @@
       </button>
     </div>
   </div>
-  <p v-for="({ chapter_title }, component_key) in reader_components" :key="chapter_title" @click="remove_component(component_key)" class="chapters"> {{chapter_title}} ✖ </p>
+  <div class="active-components">
+    <p v-for="({ chapter_title }, component_key) in reader_components" :key="chapter_title" @click="remove_component(component_key)" class="chapters become-red"> {{chapter_title}} ✖ </p>
+  </div>
   <div v-if="Object.keys(reader_components).length !== 0" class="align-centre image-container">
     <div v-for="images in get_manga()" :key="images" class="container">
       <img
@@ -159,6 +161,16 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.active-components {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.become-red:hover {
+  color: rgb(167, 29, 29);
+}
+
 *[data-tooltip] {
     position: relative;
 }
