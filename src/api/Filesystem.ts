@@ -1,3 +1,5 @@
+import { stat } from 'fs/promises'
+
 interface Iconfig {
     manga_directory: string,
     disabled_sources: string[]
@@ -8,6 +10,11 @@ export default class file_system {
     private static ipcRenderer = (window as any).ipcRenderer as Electron.IpcRenderer
     private static CONFIG: Iconfig | undefined
 
+    static async exists(path: string): Promise<boolean> {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        return !!(await stat(path).catch(e => false));
+    }
+    
     static async folders (): Promise<string> {
         return await file_system.ipcRenderer.invoke('get_file_path')
     }

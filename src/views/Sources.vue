@@ -1,4 +1,11 @@
 <template>
+  <h3>Change Download Directory</h3>
+  <input v-model="new_download_directory_input" :placeholder="config.manga_directory" size="60" />
+  &nbsp;
+  <button @click="check_valid_directory()">Check</button>
+  <p v-if="current_directory_exists" class="valid">Valid Directory ✅</p>
+  <p v-else class="invalid">Invalid Directory ✖</p>
+
   <div class="home">
       <h1>Change active sources</h1>
   </div>
@@ -14,7 +21,7 @@
         <p class="small-text">{{ identifier.website_home }}</p>
       </h2>
   </div>
-  <button v-if="tasks" @click="save()">Save</button>
+  <button v-if="tasks && current_directory_exists" @click="save()">Save</button>
   <h4 v-else>Reload the app for the changes to be applied.</h4>
 </template>
 
@@ -35,7 +42,10 @@ export default defineComponent({
       fetched_disabled_sources: false,
       disabled_sources: [] as string[],
       config: {manga_directory: '', disabled_sources: [] as string[]},
-      tasks: false
+      tasks: false,
+      new_download_directory_input: null as null | string,
+      current_directory_exists: true,
+      new_download_directory: null as null | string,
     }
   },
   methods: {
@@ -50,6 +60,8 @@ export default defineComponent({
     },
 
     async save() {
+      console.log(this.new_download_directory)
+      if (this.new_download_directory) this.config.manga_directory = this.new_download_directory;
       await file_system.update_config(JSON.parse(JSON.stringify(this.config)))
       this.tasks = false
     },
@@ -61,12 +73,30 @@ export default defineComponent({
         this.config.disabled_sources.push(identifier)
       }
       this.tasks = true
-    }
+    },
+
+    async check_valid_directory() {
+      const result = await file_system.exists(this.new_download_directory_input ? this.new_download_directory_input : this.config.manga_directory)
+      this.current_directory_exists = result
+      if (result) {
+        this.tasks = true;
+        this.new_download_directory = this.new_download_directory_input
+      }
+    },
+
   }
 });
 </script>
 
 <style scoped>
+  .valid {
+    color: rgb(143, 255, 143);
+  }
+
+  .invalid {
+    color: #fa652a;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
