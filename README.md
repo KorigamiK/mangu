@@ -32,7 +32,7 @@ Every commit counts as a new release, so you can watch this repo to receive upda
 
 - Lacks various QOL features
 - Very bare-bones' reader
-- No configuration options
+- ~~No configuration options~~
 
 # Development
 
