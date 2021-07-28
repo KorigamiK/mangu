@@ -1,10 +1,11 @@
-name: Release/Linux, Windows
+name: Release/Linux, Windows, Mac
 
 on: 
   push:
     paths-ignore:
       - '**.md'
       - 'LICENSE'
+      - '**.html'
 
 jobs:
   build:
