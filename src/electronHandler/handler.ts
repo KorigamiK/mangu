@@ -17,7 +17,28 @@ const delay = function(time: number) {
 export default class Main {
     static mainWindow: Electron.BrowserWindow | null
     static application: Electron.App
-    static browser_window = BrowserWindow
+    static browser_window: BrowserWindow
+
+    private static spawn_main_window() {
+        const win = new BrowserWindow({
+            // frame: false,
+            width: 800, 
+            height: 600,
+            paintWhenInitiallyHidden: true,
+            icon: 'public/logo.png',
+            autoHideMenuBar: true,
+            darkTheme: true,
+            // backgroundColor: '#FFF',
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js'),
+                nodeIntegration: true,
+                webSecurity: false,
+                contextIsolation: false,
+            },
+        });
+        // win.setMenuBarVisibility(false)
+        return win
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private static async get_page(url: string, script: string, wait_for=1): Promise<any> {
@@ -113,16 +134,7 @@ export default class Main {
         //       console.error('Vue Devtools failed to install:', e.toString())
         //     }
         //   }
-        Main.mainWindow = new Main.browser_window({
-            width: 800, height: 600, webPreferences: {
-                // backgroundColor: '#FFF',
-                nodeIntegration: true,
-                contextIsolation: false,
-                enableRemoteModule: true,
-                preload: path.join(__dirname, 'preload.js'),
-                webSecurity: false,
-            }
-        })
+        Main.mainWindow = Main.spawn_main_window()
 
         Main.mainWindow.webContents.setVisualZoomLevelLimits(1, 3)
         console.log(process.env.WEBPACK_DEV_SERVER_URL)

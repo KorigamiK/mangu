@@ -22,7 +22,7 @@
     <label>Series Name:</label>
     <input type="search_query" v-model="search_query" required />
 
-    <label>Query:</label>
+    <label>Source:</label>
     <select
       class="form-control"
       name="template"
